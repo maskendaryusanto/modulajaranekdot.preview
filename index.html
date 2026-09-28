@@ -1,0 +1,1542 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>[PREVIEW] Media Pembelajaran Interaktif — Teks Anekdot | SMA Negeri 1 Pronojiwo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0B2545; --navy2:#123363; --navy3:#1B3E73;
+  --blue:#1C9FE8; --yellow:#FFC72C; --yellow-dark:#E3A600;
+  --green:#1E824C; --red:#D14343; --bg:#F3F6FB; --card:#FFFFFF;
+  --text:#16233D; --muted:#5A6B8C; --line:#DCE4F0;
+  padding-top: env(safe-area-inset-top,0px); padding-bottom: env(safe-area-inset-bottom,0px);
+  box-sizing:border-box;
+}
+*{box-sizing:border-box;}
+html{scroll-padding-top:env(safe-area-inset-top,0px);}
+body{margin:0;font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;}
+h1,h2,h3,h4{font-family:'Poppins',system-ui,sans-serif;margin:0 0 .4em;color:var(--navy);}
+p{line-height:1.65;margin:.3em 0 .9em;}
+ul,ol{line-height:1.7;padding-left:1.3em;}
+button{font-family:inherit;cursor:pointer;}
+button:disabled{cursor:not-allowed;opacity:.55;}
+button,select,input,textarea,a{touch-action:manipulation;-webkit-tap-highlight-color:rgba(11,37,69,.15);}
+img{max-width:100%;display:block;}
+.hidden{display:none !important;}
+a{color:var(--blue);}
+
+/* ===== LOGIN ===== */
+#loginScreen{min-height:100vh;display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(160deg,var(--navy) 0%,var(--navy2) 55%,#0d2e5c 100%);
+  padding:32px 16px;position:relative;overflow:hidden;}
+#loginScreen::before{content:"";position:absolute;width:520px;height:520px;border-radius:50%;
+  background:radial-gradient(circle,rgba(255,199,44,.14),transparent 70%);top:-160px;right:-160px;}
+#loginScreen::after{content:"";position:absolute;width:420px;height:420px;border-radius:50%;
+  background:radial-gradient(circle,rgba(28,159,232,.18),transparent 70%);bottom:-140px;left:-140px;}
+.loginCard{position:relative;background:var(--card);border-radius:18px;max-width:400px;width:100%;
+  padding:34px 30px 28px;box-shadow:0 25px 60px rgba(0,0,0,.35);border-top:6px solid var(--yellow);}
+.loginCard .logoWrap{display:flex;justify-content:center;margin-bottom:10px;}
+.loginCard .logoWrap img{width:78px;height:auto;}
+.loginCard h1{text-align:center;font-size:1.05rem;color:var(--navy);margin-bottom:2px;}
+.loginCard .sub{text-align:center;color:var(--muted);font-size:.82rem;margin-bottom:18px;}
+.loginCard .matapel{text-align:center;background:var(--navy);color:#fff;font-weight:600;
+  font-size:.78rem;letter-spacing:.03em;padding:6px 10px;border-radius:8px;margin-bottom:20px;}
+label{display:block;font-weight:600;font-size:.82rem;color:var(--navy);margin:14px 0 6px;}
+input[type=text],input[type=password],select{
+  width:100%;padding:11px 13px;border:1.5px solid var(--line);border-radius:10px;font-size:.95rem;
+  background:#F8FAFD;color:var(--text);transition:border .15s;}
+input:focus,select:focus{outline:none;border-color:var(--blue);background:#fff;}
+.pwWrap{position:relative;}
+.pwWrap button{position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;
+  border:none;color:var(--muted);font-size:.75rem;font-weight:600;}
+.loginBtn{width:100%;margin-top:20px;background:var(--yellow);color:var(--navy);border:none;
+  padding:13px;border-radius:10px;font-weight:700;font-size:.95rem;transition:transform .12s,background .15s;}
+.loginBtn:hover{background:var(--yellow-dark);}
+.loginBtn:active{transform:scale(.98);}
+.loginErr{color:var(--red);font-size:.8rem;font-weight:600;margin-top:10px;text-align:center;min-height:1em;}
+.loginFoot{text-align:center;margin-top:16px;font-size:.72rem;color:var(--muted);}
+
+/* ===== APP SHELL ===== */
+#app{min-height:100vh;display:none;flex-direction:column;}
+header.topbar{background:var(--navy);color:#fff;display:flex;align-items:center;gap:12px;
+  padding:10px 16px;padding-top:calc(10px + env(safe-area-inset-top,0px));position:sticky;top:0;z-index:40;
+  box-shadow:0 2px 10px rgba(0,0,0,.15);}
+header.topbar img.logo{width:40px;height:auto;flex-shrink:0;}
+.brandText{line-height:1.2;flex:1;min-width:0;}
+.brandText .t1{font-family:'Poppins';font-weight:700;font-size:.86rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.brandText .t2{font-size:.68rem;color:#BFD4EE;}
+.userBadge{display:flex;align-items:center;gap:8px;background:var(--navy2);padding:6px 12px;border-radius:20px;font-size:.72rem;}
+.userBadge b{color:var(--yellow);}
+#logoutBtn{background:transparent;border:1px solid rgba(255,255,255,.3);color:#fff;padding:5px 10px;
+  border-radius:8px;font-size:.7rem;}
+#menuToggle{display:none;background:none;border:none;color:#fff;font-size:1.4rem;padding:4px 8px;}
+
+nav.mainnav{background:var(--navy2);display:flex;flex-wrap:wrap;gap:2px;padding:0 10px;
+  position:sticky;top:var(--hdrH,60px);z-index:39;overflow-x:auto;}
+nav.mainnav button{background:none;border:none;color:#CFE0F5;padding:12px 14px;font-size:.8rem;
+  font-weight:600;border-bottom:3px solid transparent;white-space:nowrap;}
+nav.mainnav button.active{color:#fff;border-bottom-color:var(--yellow);}
+nav.mainnav button:hover{color:#fff;}
+
+main{flex:1;max-width:980px;margin:0 auto;width:100%;padding:22px 16px 60px;}
+.page{display:none;animation:fade .25s ease;}
+.page.active{display:block;}
+@keyframes fade{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+
+.pageHead{margin-bottom:20px;}
+.pageHead .eyebrow{color:var(--blue);font-weight:700;font-size:.75rem;}
+.card{background:var(--card);border-radius:14px;padding:20px 20px;margin-bottom:16px;
+  box-shadow:0 3px 14px rgba(11,37,69,.07);border:1px solid var(--line);}
+.card h3{color:var(--navy);}
+.badgeYellow{display:inline-block;background:var(--yellow);color:var(--navy);font-weight:700;
+  font-size:.7rem;padding:3px 10px;border-radius:20px;margin-bottom:8px;}
+
+/* Beranda */
+.heroBox{background:linear-gradient(120deg,var(--navy),var(--navy3));color:#fff;border-radius:16px;
+  padding:26px 22px;margin-bottom:18px;position:relative;overflow:hidden;}
+.heroBox h2{color:#fff;font-size:1.3rem;}
+.heroBox p{color:#D9E5F5;}
+.tpList{list-style:none;padding:0;margin:0;}
+.tpList li{display:flex;gap:10px;padding:9px 0;border-bottom:1px dashed var(--line);}
+.tpList li:last-child{border-bottom:none;}
+.tpNum{background:var(--yellow);color:var(--navy);font-weight:800;width:26px;height:26px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:.78rem;}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+@media(max-width:640px){.grid2{grid-template-columns:1fr;}}
+.miniCard{background:#EEF4FC;border-radius:12px;padding:14px 16px;border-left:4px solid var(--blue);}
+.miniCard.y{border-left-color:var(--yellow-dark);background:#FFF9EC;}
+.miniCard h4{margin:0 0 4px;font-size:.9rem;color:var(--navy);}
+.miniCard p{margin:0;font-size:.82rem;color:var(--muted);}
+
+/* Materi tabs */
+.subtabs{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px;}
+.subtabs button{background:#fff;border:1.5px solid var(--line);color:var(--navy);padding:7px 12px;
+  border-radius:8px;font-size:.75rem;font-weight:600;}
+.subtabs button.active{background:var(--navy);border-color:var(--navy);color:#fff;}
+.subtabs button .n{color:var(--yellow-dark);margin-right:3px;}
+.subtabs button.active .n{color:var(--yellow);}
+.matBlock{display:none;}
+.matBlock.active{display:block;}
+.subtabs button.locked, nav.mainnav button.locked{opacity:.5;cursor:not-allowed;}
+.subtabs button.locked:hover{color:var(--navy);}
+.proyekCheck{border-top:1px dashed var(--line);margin-top:14px;padding-top:12px;}
+.proyekCheck .pcStatus{font-size:.83rem;margin:0 0 10px;}
+.proyekCheck.done .pcStatus{color:var(--green);font-weight:700;margin:0;}
+.proyekCheck .pcRow{display:flex;gap:8px;flex-wrap:wrap;}
+.proyekCheck input{flex:1;min-width:140px;padding:10px 12px;border:1.5px solid var(--line);border-radius:9px;font-size:.9rem;}
+.proyekCheck .pcErr{color:var(--red);font-size:.8rem;margin-top:6px;}
+.stageGate{background:#FFF9EC;border:1.5px dashed var(--yellow-dark);border-radius:10px;
+  padding:14px 16px;margin-top:18px;text-align:center;}
+.stageGate p{margin:0 0 10px;font-size:.82rem;color:var(--muted);}
+.stageGate .doneMsg{color:var(--green);font-weight:700;font-size:.85rem;margin:0;}
+.exampleBox{background:#F6FAF7;border:1.5px solid #CFE9D7;border-left:4px solid var(--green);
+  border-radius:10px;padding:14px 16px;margin:12px 0;font-size:.88rem;}
+.exampleBox b{color:var(--green);}
+.structTable{width:100%;border-collapse:collapse;font-size:.85rem;margin:10px 0;}
+.structTable th{background:var(--navy);color:#fff;text-align:left;padding:8px 10px;}
+.structTable td{padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top;}
+.structTable tr:nth-child(even){background:#F7FAFE;}
+
+/* Proyek */
+.proyekCard{border-top:5px solid var(--yellow);}
+.proyekMeta{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0 14px;}
+.tag{background:#EEF4FC;color:var(--navy2);font-size:.7rem;font-weight:700;padding:4px 10px;border-radius:20px;}
+
+/* Kuis */
+.levelGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:10px;}
+.levelBtn{background:#fff;border:2px solid var(--line);border-radius:12px;padding:16px 12px;text-align:center;}
+.levelBtn .lv{font-family:'Poppins';font-weight:800;color:var(--navy);font-size:1.1rem;}
+.levelBtn .ln{font-size:.75rem;color:var(--muted);margin-top:4px;}
+.levelBtn .score{margin-top:8px;font-size:.72rem;font-weight:700;color:var(--green);}
+.levelBtn:hover{border-color:var(--blue);}
+.qBlock{margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid var(--line);}
+.qBlock:last-child{border-bottom:none;}
+.qNum{font-weight:700;color:var(--navy);margin-bottom:8px;font-size:.92rem;}
+.instrBox{background:#FFF6DE;border:1px dashed var(--yellow-dark);color:#7A5900;font-size:.78rem;
+  font-weight:600;padding:8px 12px;border-radius:8px;margin-bottom:10px;}
+.opt{display:flex;align-items:flex-start;gap:9px;padding:9px 12px;border:1.5px solid var(--line);
+  border-radius:9px;margin-bottom:7px;font-size:.88rem;background:#fff;}
+.opt:hover{border-color:var(--blue);}
+.opt input{margin-top:3px;}
+.opt.correct{border-color:var(--green);background:#F1FAF3;}
+.opt.wrong{border-color:var(--red);background:#FCEFEF;}
+.btnRow{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px;}
+.btnPrimary{background:var(--navy);color:#fff;border:none;padding:11px 20px;border-radius:9px;font-weight:700;font-size:.85rem;}
+.btnPrimary:hover{background:var(--navy2);}
+.btnGhost{background:#fff;color:var(--navy);border:1.5px solid var(--line);padding:11px 20px;border-radius:9px;font-weight:700;font-size:.85rem;}
+.resultBox{text-align:center;padding:26px 14px;}
+.resultBox .num{font-family:'Poppins';font-size:2.6rem;font-weight:800;color:var(--navy);}
+.resultBox .pred{display:inline-block;margin-top:6px;background:var(--yellow);color:var(--navy);
+  padding:5px 16px;border-radius:20px;font-weight:700;font-size:.82rem;}
+input[type=text].isianInput{width:100%;max-width:340px;}
+.jodohRow{display:flex;align-items:center;gap:10px;margin-bottom:9px;font-size:.87rem;flex-wrap:wrap;}
+.jodohRow .jl{flex:1;min-width:150px;background:#F4F7FB;padding:8px 10px;border-radius:8px;border:1px solid var(--line);}
+.jodohRow select{flex:1;min-width:150px;}
+.bsStmt{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:8px 10px;
+  border:1px solid var(--line);border-radius:8px;margin-bottom:7px;font-size:.85rem;background:#fff;}
+.bsBtns{display:flex;gap:6px;flex-shrink:0;}
+.bsBtns button{border:1.5px solid var(--line);background:#fff;padding:5px 12px;border-radius:6px;font-size:.75rem;font-weight:700;}
+.bsBtns button.sel-true.on{background:var(--green);color:#fff;border-color:var(--green);}
+.bsBtns button.sel-false.on{background:var(--red);color:#fff;border-color:var(--red);}
+.reviewRow{display:flex;gap:8px;align-items:flex-start;font-size:.82rem;padding:8px 0;border-bottom:1px dashed var(--line);}
+.reviewRow .ic{flex-shrink:0;font-weight:800;}
+.reviewRow .ic.ok{color:var(--green);} .reviewRow .ic.no{color:var(--red);}
+footer.appfoot{text-align:center;padding:18px;color:var(--muted);font-size:.72rem;background:#fff;border-top:1px solid var(--line);}
+
+@media(max-width:640px){
+  #menuToggle{display:block;}
+  nav.mainnav{display:none;flex-direction:column;position:fixed;top:0;left:0;right:0;bottom:0;padding-top:70px;z-index:60;}
+  nav.mainnav.open{display:flex;}
+  nav.mainnav button{text-align:left;padding:14px 16px;border-bottom:1px solid rgba(255,255,255,.08);border-left:3px solid transparent;}
+  nav.mainnav button.active{border-left-color:var(--yellow);border-bottom-color:rgba(255,255,255,.08);}
+  .userBadge span{display:none;}
+  .brandText .t2{display:none;}
+}
+/* ===== PROTEKSI KONTEN ===== */
+html,body{-webkit-user-select:none;-moz-user-select:none;user-select:none;-webkit-touch-callout:none;}
+input,textarea,select{-webkit-user-select:text;-moz-user-select:text;user-select:text;}
+img{-webkit-user-drag:none;user-drag:none;pointer-events:none;}
+#watermarkLayer{position:fixed;inset:0;z-index:9998;pointer-events:none;overflow:hidden;
+  display:flex;flex-wrap:wrap;align-content:flex-start;opacity:.07;transform:rotate(-28deg) scale(1.4);}
+#watermarkLayer span{display:inline-block;white-space:nowrap;font-size:12px;font-weight:700;color:#0B2545;
+  padding:26px 34px;}
+#privacyBlur{position:fixed;inset:0;z-index:9999;display:none;align-items:center;justify-content:center;
+  background:var(--navy);color:#fff;text-align:center;padding:24px;font-size:.9rem;font-weight:600;}
+#protectToast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:var(--navy);color:#fff;
+  padding:10px 18px;border-radius:20px;font-size:.78rem;font-weight:600;z-index:10000;box-shadow:0 6px 20px rgba(0,0,0,.3);
+  opacity:0;transition:opacity .25s;pointer-events:none;max-width:90vw;text-align:center;}
+#protectToast.show{opacity:1;}
+</style>
+</head>
+<body>
+<div id="watermarkLayer"></div>
+<div id="privacyBlur">🔒 Konten disembunyikan sementara untuk melindungi hak cipta materi.<br>Kembali ke tab ini untuk melanjutkan.</div>
+<div id="protectToast"></div>
+
+<!-- ============ AKSES DITUTUP ============ -->
+<div id="lockScreen" style="display:none;min-height:100vh;align-items:center;justify-content:center;
+  background:linear-gradient(160deg,#0B2545 0%,#123363 55%,#0d2e5c 100%);padding:32px 16px;">
+  <div class="loginCard" style="border-top-color:#D14343;text-align:center;">
+    <div class="logoWrap"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIsAAAC0CAMAAACT6y+1AAAKMWlDQ1BJQ0MgUHJvZmlsZQAAeJydlndUU9kWh8+9N71QkhCKlNBraFICSA29SJEuKjEJEErAkAAiNkRUcERRkaYIMijggKNDkbEiioUBUbHrBBlE1HFwFBuWSWStGd+8ee/Nm98f935rn73P3Wfvfda6AJD8gwXCTFgJgAyhWBTh58WIjYtnYAcBDPAAA2wA4HCzs0IW+EYCmQJ82IxsmRP4F726DiD5+yrTP4zBAP+flLlZIjEAUJiM5/L42VwZF8k4PVecJbdPyZi2NE3OMErOIlmCMlaTc/IsW3z2mWUPOfMyhDwZy3PO4mXw5Nwn4405Er6MkWAZF+cI+LkyviZjg3RJhkDGb+SxGXxONgAoktwu5nNTZGwtY5IoMoIt43kA4EjJX/DSL1jMzxPLD8XOzFouEiSniBkmXFOGjZMTi+HPz03ni8XMMA43jSPiMdiZGVkc4XIAZs/8WRR5bRmyIjvYODk4MG0tbb4o1H9d/JuS93aWXoR/7hlEH/jD9ld+mQ0AsKZltdn6h21pFQBd6wFQu/2HzWAvAIqyvnUOfXEeunxeUsTiLGcrq9zcXEsBn2spL+jv+p8Of0NffM9Svt3v5WF485M4knQxQ143bmZ6pkTEyM7icPkM5p+H+B8H/nUeFhH8JL6IL5RFRMumTCBMlrVbyBOIBZlChkD4n5r4D8P+pNm5lona+BHQllgCpSEaQH4eACgqESAJe2Qr0O99C8ZHA/nNi9GZmJ37z4L+fVe4TP7IFiR/jmNHRDK4ElHO7Jr8WgI0IABFQAPqQBvoAxPABLbAEbgAD+ADAkEoiARxYDHgghSQAUQgFxSAtaAYlIKtYCeoBnWgETSDNnAYdIFj4DQ4By6By2AE3AFSMA6egCnwCsxAEISFyBAVUod0IEPIHLKFWJAb5AMFQxFQHJQIJUNCSAIVQOugUqgcqobqoWboW+godBq6AA1Dt6BRaBL6FXoHIzAJpsFasBFsBbNgTzgIjoQXwcnwMjgfLoK3wJVwA3wQ7oRPw5fgEVgKP4GnEYAQETqiizARFsJGQpF4JAkRIauQEqQCaUDakB6kH7mKSJGnyFsUBkVFMVBMlAvKHxWF4qKWoVahNqOqUQdQnag+1FXUKGoK9RFNRmuizdHO6AB0LDoZnYsuRlegm9Ad6LPoEfQ4+hUGg6FjjDGOGH9MHCYVswKzGbMb0445hRnGjGGmsVisOtYc64oNxXKwYmwxtgp7EHsSewU7jn2DI+J0cLY4X1w8TogrxFXgWnAncFdwE7gZvBLeEO+MD8Xz8MvxZfhGfA9+CD+OnyEoE4wJroRIQiphLaGS0EY4S7hLeEEkEvWITsRwooC4hlhJPEQ8TxwlviVRSGYkNimBJCFtIe0nnSLdIr0gk8lGZA9yPFlM3kJuJp8h3ye/UaAqWCoEKPAUVivUKHQqXFF4pohXNFT0VFysmK9YoXhEcUjxqRJeyUiJrcRRWqVUo3RU6YbStDJV2UY5VDlDebNyi/IF5UcULMWI4kPhUYoo+yhnKGNUhKpPZVO51HXURupZ6jgNQzOmBdBSaaW0b2iDtCkVioqdSrRKnkqNynEVKR2hG9ED6On0Mvph+nX6O1UtVU9Vvuom1TbVK6qv1eaoeajx1UrU2tVG1N6pM9R91NPUt6l3qd/TQGmYaYRr5Grs0Tir8XQObY7LHO6ckjmH59zWhDXNNCM0V2ju0xzQnNbS1vLTytKq0jqj9VSbru2hnaq9Q/uE9qQOVcdNR6CzQ+ekzmOGCsOTkc6oZPQxpnQ1df11Jbr1uoO6M3rGelF6hXrtevf0Cfos/ST9Hfq9+lMGOgYhBgUGrQa3DfGGLMMUw12G/YavjYyNYow2GHUZPTJWMw4wzjduNb5rQjZxN1lm0mByzRRjyjJNM91tetkMNrM3SzGrMRsyh80dzAXmu82HLdAWThZCiwaLG0wS05OZw2xljlrSLYMtCy27LJ9ZGVjFW22z6rf6aG1vnW7daH3HhmITaFNo02Pzq62ZLde2xvbaXPJc37mr53bPfW5nbse322N3055qH2K/wb7X/oODo4PIoc1h0tHAMdGx1vEGi8YKY21mnXdCO3k5rXY65vTW2cFZ7HzY+RcXpkuaS4vLo3nG8/jzGueNueq5clzrXaVuDLdEt71uUnddd457g/sDD30PnkeTx4SnqWeq50HPZ17WXiKvDq/XbGf2SvYpb8Tbz7vEe9CH4hPlU+1z31fPN9m31XfKz95vhd8pf7R/kP82/xsBWgHcgOaAqUDHwJWBfUGkoAVB1UEPgs2CRcE9IXBIYMj2kLvzDecL53eFgtCA0O2h98KMw5aFfR+OCQ8Lrwl/GGETURDRv4C6YMmClgWvIr0iyyLvRJlESaJ6oxWjE6Kbo1/HeMeUx0hjrWJXxl6K04gTxHXHY+Oj45vipxf6LNy5cDzBPqE44foi40V5iy4s1licvvj4EsUlnCVHEtGJMYktie85oZwGzvTSgKW1S6e4bO4u7hOeB28Hb5Lvyi/nTyS5JpUnPUp2Td6ePJninlKR8lTAFlQLnqf6p9alvk4LTduf9ik9Jr09A5eRmHFUSBGmCfsytTPzMoezzLOKs6TLnJftXDYlChI1ZUPZi7K7xTTZz9SAxESyXjKa45ZTk/MmNzr3SJ5ynjBvYLnZ8k3LJ/J9879egVrBXdFboFuwtmB0pefK+lXQqqWrelfrry5aPb7Gb82BtYS1aWt/KLQuLC98uS5mXU+RVtGaorH1futbixWKRcU3NrhsqNuI2ijYOLhp7qaqTR9LeCUXS61LK0rfb+ZuvviVzVeVX33akrRlsMyhbM9WzFbh1uvb3LcdKFcuzy8f2x6yvXMHY0fJjpc7l+y8UGFXUbeLsEuyS1oZXNldZVC1tep9dUr1SI1XTXutZu2m2te7ebuv7PHY01anVVda926vYO/Ner/6zgajhop9mH05+x42Rjf2f836urlJo6m06cN+4X7pgYgDfc2Ozc0tmi1lrXCrpHXyYMLBy994f9Pdxmyrb6e3lx4ChySHHn+b+O31w0GHe4+wjrR9Z/hdbQe1o6QT6lzeOdWV0iXtjusePhp4tLfHpafje8vv9x/TPVZzXOV42QnCiaITn07mn5w+lXXq6enk02O9S3rvnIk9c60vvG/wbNDZ8+d8z53p9+w/ed71/LELzheOXmRd7LrkcKlzwH6g4wf7HzoGHQY7hxyHui87Xe4Znjd84or7ldNXva+euxZw7dLI/JHh61HXb95IuCG9ybv56Fb6ree3c27P3FlzF3235J7SvYr7mvcbfjT9sV3qID0+6j068GDBgztj3LEnP2X/9H686CH5YcWEzkTzI9tHxyZ9Jy8/Xvh4/EnWk5mnxT8r/1z7zOTZd794/DIwFTs1/lz0/NOvm1+ov9j/0u5l73TY9P1XGa9mXpe8UX9z4C3rbf+7mHcTM7nvse8rP5h+6PkY9PHup4xPn34D94Tz+6TMXDkAAAD/UExURSAnIGhkYwtcMA9WYqOYEGVaGNzRCBwXGJCOjUk0JxwXGBwXGOUgKAdgj8a4CgmDtwCy/AeLSoV4D4J7eAGTPggwUt7e3sG8u50VFlmRZoeVYHWbhkQ+QgB8xHWJMYJ+gLCwyKzJtse7wQDB/39/gcLAvwCi6gAAAP39/QCaS/73CA8ICRkWFwOT2CMaGgCkT/frBgGb5ejn6NjX1y4nJ8nHyBEnL05HRwh3rApmkgWJyZiWlre3tw83TamnqAOKOwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPJ6j3YAAABAdFJOU/j+//////8d/v6lXP/////////////////////+///+/////////wD////9+//+///////+///+///////////8ZyUnAAAaBUlEQVR42sWc54LiupKAJQfanm6ggQ5nTtgbdrfHYGFwxrHf/622qiQnMKln9h796AC2/KmSSsFiP75QHh4eHh8fv2FhWIQq8Cd89Pj48NBeeU+17F4KZICHe1jEcfGajxkh3dlEdg8GQKhnuVTg4VEUoWTwV/Op20AR0cPDL2ZBaQiioGdFjHOrfg+DwOmVIAjjsrB4yiKhSCXQrRJiN3BIcQiiSLkVIwE8t4bncp6aNhQzhT9XVl3Sl04Q15yzjgiBHn6SRXGQOCJulQE95n+4HTXqYElVVToU+JUkaMVeZPPf61heylO68jYedguHYLwOHeettLgSf1Lp2WGeb/2PYfG3+SHTq0TAPaYUYQhATAnoMg87C9Jw2BzEEcSAISn06SHfDp7flP6HW0ACIi/iBQEVpDLFc8ae2XmBwJNBHsBRctuDf1AW8+2A4OOkDD718ykCoXpBrEFNzaE2joqHnRUItCgkDmSq9EPu9x/YV8ohw4Iq+xgpfg4Scl0vRY2BfDxlPqc4bASEBBI7TmylcGOiH0afsT1MwTAgtDDwItOO8D42EN3gYuIxgQeaFzXWPMRhpyAiRYHU/DxHftArJh0cgkwTXsKykG6T6Fl+ngfEHcScKePpS4cdgURoqaEFimGjHP48AwyQ+KoMnbES1iuUJqsu8NireAyHHYE4TokXjdeUZ5U0pNi5XOIC9cD0bFRfWAvjZRivmLJlicN+PLQgsdTMuEAaCVtHHPRvXKOS6jgY8jDU13zE2z7mUJkHQStGDUicB2Bh6DUCJEIgcO9ZgVCkaXUBUuZpGdjwdxlx+FkznoZxyuseD1q/GDe6bfaqcFI0Ug9IvmEPX7wBCHOT6ahmpsrkekYBvU9Yp46VOmmAj1zBhxZ30rrgcWrBB2XbY1JUqc5pCyyviMHTI4g52INEUDdoUM9V8BiAoGaivkBKzuMwgj46TLkdOyki1sRic+6AqMCcmMVXTtjCxyvQRHJkgvI52wzqh/akKJlH0FDBXXYY5Uaj71nI/66C2I5rIOCgChuwnLSUInEcUk5aM8vhluPYDnzZ+VpYpN4Z45lXLisFyuXHoyc8y6varzKlKNSna1ptbYFDtsALeHIAPx0UCS/Jp2L8QXE+dWqOXwRpmNpOGjuF1cNpIwUGY6U1/1n3ODj3N/Qj5rmcu61cIH1NIAUAO7d7ILFjrUIzLCCeOSWYRcrT+H0kwryBfIIVB4MC04ZrU75KewYvIzkmF0w0Ksvd2nI9gX704wG0VNtJw6K7f6a2ySlL6BxCWNDklBeg2VWRxoF1McRYaDl1GRUgJJRkz3YgheCmnaau3jww4SFo6FHGum8gmNLN1FcHtxjUW5KQU9vi4aoIIAOwiq6hkC4VXBZrGF4cKwjc2IKb0XoArBx8W7TPy1jAXdCQirsgmDgVyqy2Lu9kCq3noibDXLlFLDv/BqOQuURXPFvmfk2pHbR0BmmHHXCwsl5+zN28eZwVk4ZUf/Touf/oBMM6lpTBXSW6Cgh7ZTltP1jytElpDnNIFrbbfA7ZE6VP9uooAliglxBs2bG50zSFs8YkPEeJRbKAYJgTNRZT2SQSuNyxGDgO5xH0DtYwmGJn3GUHc32QrQhMDnraSm1QVsgtcAY7qCkup0mnhYispemnwZVCy1VV6xE8j6dFAZ0gBhALLGQYRZk+7YdR/6Pytsd9l4gwJ5TlPXbM8B0+sHiNQwf43FZBJHPDELrrh44FrLcOG7fWvQDsLSxBxRHeHPRAvNEufBt5+VhvDD3pW2N5Tu0FdWSVqXSsSG8bXigVKRYwGO546usMWMAeUgvF8hb2Qca78I+5zcaTOcBJm34sCB0rcsixCidoHpbw1lwUy4PnQvToxIapQJmGvDFWBTLa/WMYsO3t+Df+QQfj6eGUdlyCY715WeNF0BV5j30W7CAb0z646Mmcl32JjOcSTYiw7fPf+lI6jbLAYN6hqcogIOY6MOg4YhFOIWTj5m7d5EjklAiSf1wqmf1bdul7yg06U0YiFV6w3ZEy3SbfhdQhLJUjbd1V677gNeNJzZDlt6fkyiXY5fdwuGp35r4F4pjFc+PYVYKuokDGswhysqsgksXOrl6V6wzTXKqbVW2ki2G4OxgHgFOXrVPnEBtoDFxl/sct5WA/PSXbWy7UIS5D7hO18YM5peudsNRB2wvMKwjE42nheIuBxdZvuhQcC8cizZOqCExHuXSPpXC8Ts7bmzlkrHt6evLymy/vBruJ3YW6hgWCndUGu/tKDi1gwPJb9YWbE8jfR1hWX2PxowjU/hvA2If772YUdh+PWXjbR9xV/nyy8+cMDObp6X7B+OJXsugoj+cDsdwvmO1ZFvv+hkFkefpNfz54T1+yGAyr4yzm/XUlaCiVYnkS+d0s1inLA7Kkr/eySIZK2cuTl32N5eGYJXV4ci/LFFlAR+RHN8e7XjyAqParWObEcsikim7plI5ZMH0Rv4SFAu5vlUJ5upDFnGOpR1gEsrC7/ahCAluhPEX+vXI9y7K6n0UZiip3++GvZfG6Yt/fh8zd8hyLuJtl6rKoWchy3S+x/DnKYt3Poqc4QfUeWXEcl+aXWGxX/Bhj8e9meaf0NaJBh1V9iUWMy+V+FhpqBBGNGt5/Kcv2bhaZ2EuWkH2FhY2yFF9gcXpyCV79v5HFH7A4cjrwkP0KFvdeli0fsKSYM2wZq7Z/A0vesMjBO59/+DAUTNzqp23351kOwKK7nxrLfo6Ff4HlMGRZZaSi9adItvfEuv8PFmv6DGLRXl5uFcy5/ugrLNlqyKJvK6a9fL58iuo/zjK1BiylYIjy+blmt4WHfJTF+xKLPmSJhUT5XGvs8J9mqeoBS8g+14jyeavBjOeYX2R5H7AE0eeLZPkUN+UP27Ms1t0sSThgcZSKbjbeX8iyjd6GLLa2vpuF/yzLNs/zrT+PnCFLqlg+P1lyG8v4uJHfnr9sddo6ljB2xMI1paUXxrY/xfL7VRZaKoQRPdMWur7QtLRheWtWYjwmnVoGGN+/NucxPob9B4wDttemFTJEYdoOi5YI3rAEzbStJ8iVIMDAGHKe5NfmgsZZLGC50ozMBclD57dbr9c7zVy6xyyFuzTZWgaYKVzpTq+xjM953MDyatrTrdAIZZ1MDFctcIUNi+UaE4H2C46UPGf21RkdZo3OBV1n8dnEeGUNirExmlXSlqV04VMBHfULKunV2F/TOrCsRlhAc5dZnnUTHg8oux2Y7WwD/9RHLO/AsjGggyTBJJON+fp8sU62wjnVx9O5Zi5GvDdv1vGep95kMxFrBDGN/Wa/Md33I5bYNeHzvWGKREs8MdnsbUhpjuu6iWVkfJMINaeyfWUkCgSZbLAYroiPWEImDPpuYpieC2AA03RMBzGisGR1Ou/9De1ljOXAJMyBmXt8PDMlyGZiJpoIj1jemNZdYDDU2N5k5ExzwUa6y4Sfznvj2sT4XFDCEh/nNrC9potA+z2SMG29bsXR/BGwNRitidfihQZKBuxHp3pYPspS386iL0HlOpgK2Aeb0DM2BpKAO7FjFoeRYQvb2NOVE4b2M/Gmz1PbGIs1wFLezjJdGq9zQjHsPcnEsCUJiMA5ZtEW5PCaYIYUIFsSzOHVGGV5HWcpz8llghUDhrmnprYk60V6wpJ+0ldIY5MQ92Dx+82MCQhNY8kYB98bZRnr51+NjbCxVsMgFK8hgV5ghEVrvlwzj2AMdKaNKfazsZ4bWcStLDkECU+KBZ1jz5qHXWHBrxna1sYk/Yr9hk1HWUIhRljSExb/Y2qDAaKXzihwGEn7rFEWrvW+T4xWnnuGMXiEJR1liUdYIDAa4L9EQSxm/1laszklHmfR5I1ovSidycjShW46oTfKcgqus0bjS2KxB8/y0pSvrBDkgluhOE9TNvje7rHA7SNzi8ASRCcsEM9Pevi8or5u2bH05AK+4jJNg2wztaI6hQ4RCkbA3ZFcDHRuZJmdyl23R1jECYsPPYiL5icbZmDU2sxczOnwQZ8a5xG+KaHpGmOQtOj4/kSkcV269XqnC3Ik01BN2W9OF96AxRllGayr+diDuEvplRRCVYfIMJ6Brfz734VlrWzmCh0evmC4W6qwVnVsLVA0EH1lNynjDLGchpgxFtzP4AyXfyCX1MRERQgoFPCoJ/LYTls5cpcfbjVwma65kdxYEhb8LdRRc+ZMwrONkg54k6c/H7GApbGrLJDsNwq3qTZDCoaq1yynt1W09Fyv2wcX8CDgbW+NTSBDk+Z2PE1/G0sFWZMUhYwvrWCACnv69/5OQLfu/2dB7tBeK1uwl92qkWj6CYt9jUUXi92OzfpNmygDgP4a8q7BfsA/w+EuP0c3lQiFbMdMxuAZW2iV/+EPWNIxlt76tM4WkNeSQEDXtqx4JgzZ3bEyrAcs9mBHZF073xl1pIanVGVKthmEBMZ6q29TZHHZMcubE00bF8ooZu2UciaC5AN9v41mMBNaUA+3Y7LBvzF3/kB5TEzqi6iGScuyZm43NzNlYyxe0LBAYFEDD6WjzbJntqYBg47ezr8RFlDgv4QBDmc0t5mNynAUAZLRt0pPUy/oJj0GLJkKLK6MrjtNWiBYjKn+QBqP8Wssb2+axwx1S88Fl7rMwVii9JQRi3fKoua11CAVI6dqDmQtRgsD5lLExUUWq3ZUwqBQGgc3m96h2Y2DLHzI8iCQRS67+wlru7dk1sCwFgZSmLIuL7KUlqO3LD2UWZtp6TQq8C+y+BhYFke9G5ktJbAyhdFiK7jIEqDxGvJGCNv7phldz7pbJLSCMT3DEhCLzvSu21834sC8To1HlkwLuXORxeHBvzDpxhsas6VI11WMFpwcni+xAEovA5F9bWu1JlmjqfH4GosVv6n+wzRaFEiVe1WDBbtiqp9l0Z8zNrwe8qUOBmuegLlYdXGFpSzQeGFcbbb3DlJlVbcQyTkWdzpnbL0+uoHtO5i9wWBIUlvlFZbQchZwpanGdqRjm+2O614kbvTWTWT2WEJRMbE+LjvGepKBKjUt5sEVFoh2fzC7JSGUZH1a91rKZYxFCG03AuPNOhQwF/3t2FxOWazgX1oXH9ENR1DIBE7iLu5TRZYRFIpMbTCHSjUeXmep46CLdthHjtZ8gcUdZSeYNkZAdLFK6ypLXIPBzJRQNkt3HOU8y9u5O9DiZeyEGAHmglEX332tm1dOFUsAHxU1vdkRFJA2LFVsMtnibMXjLGFwlgUjE6ThMnRqTl1AJxCHQYCvyxX4ugSL8QWKogyRsIDPSsj8NFPG3W4EPsLCnG5RuM/inWUh0dgzGqxxepuCJENSCUurjrglXz9Rb0a8lbUTaoxyGHGx1micxbnEQtMYBiSJ2h8UP77rOo7N9D9obzDp6B0/1PXFd/lZAAazX14QSsMSHbPgGJZdYsHQpOE00PtboWuf8C+W9Yumf4fRb/z2B34ox3Evn4vv0Ht+h2iXLC5XqdG48WSP9bsTsYs3YveULHSOzxzIS+M4WqTZoUXz8efij+9aou0u17hjKY7tT1hKh11jkWPlXTsXRC/+0zvuzS+vq+Jlsd5dq2/HaP5lyELzdSlb31N2ibGfDMveSO6rAlje1Rs/x/Ped1W0bvO1TS8sL+6qQvwD51TZyFyze09Fu0UvyHeJgb67hwUkMLbfG9eEF3dUpKZ6joqt3VPFAmcJR1li966KmmR4UExtQY4tPf5qFW44spaFb2ZdDLy3sjDpXTRNtbjCQ13AnyMsUeDYZ526a2Xb4HMslT6dZhm9cy4A6KxjYzXiz16oa98rp8lDcKTd+E00FycnxKDIqNuO5DYzu01w2OFZFRj04XvfEmd32rJPqBENQ4yxoEkzTTa8uVvexBJobI5v6/k+vmYvNcC8fbN8Y/3ZLNRE24/8cDjkzasR+OoaXr1o692tF7JhVXYYuFHLIo1XVImcj6S2Q8eCd+nqxbBuesvfbvP8kFVq8GT804mbwTuTfSb0mnp2yJs3KyCRZqpilC6+ibj9eP5vfPuoM92WhYzXYXqeZzqehpHQwRhQYdNAH5sLDe4dVeErABO6ZTX4gAxBCQB6TQCaqvfbtocsw3M2EBA+QRXi2Q2UMZyw4AwMQIJBHPxnmm0YzCMemuZCe+ngCvz+OSPB7HGjElfzLD2Dk3aGzfHp6a0hgR3pePiHNuiNeixkMDXbweMqKDjAbOQBLZL5gGrwJxHBQ+QAvsdiHgcFaaOkL3o5FA/70CImLXoxNJeOhQwmiBZ4N+4BMNh0Dp6pk+kcOQL9+4mOYDYsphwwK9jPz5fOlyUPGAqIgjHXNDRZAyS7/UjXY5FTDVythO8WxoSM7YRjQLSg2TMTkkpayxOfL1Jk2AgdeI7CE3R3QC+Ft4Ogm/ajS//cClJSKTBY0sgb+lw2wNjtBu7e9UnLwIkNWv5FXTSW5s+n+uIkhTehWmlJLEGj6Kmox/KIrwiAJ1UUuxe6QTBH8U65exd8cY3IeHNqXAbprVXJzSb+dq73kkAwEBOnWcm1k+zAgoGK+ud5CPSk3/WPqYxOJg0Sdz0DbApLqLORwRcXdf7pFLPNTB+CNNLREYeq0WnxHO3mVZ9/PFdDLxqcc4KvlztvEDgxGkxplWNjJpTQHp3OAaHhFV+aRySo3yic3ycbTZ5xkE+lj3XK2sIn4A1rHArj5N22WT0Me/nCEYvsH/lUxpbnCszR2C8hClRjb1v6GHoh0uTJZLJyft8Y02c/ByEsKAn/JEG2L/JixyE8A1eiTLnBwf/Q+dByh+e/UHIXJj4dbvO8Zbh8OjFc/VnejXEGI920fyzNx/PU3PDA2OsQDhedJ8uODHB8ipvPuFhuggwnIn9W25Pi3vaBExYlmIwu/kuHdHa5ZObMfM3xtUSINLRDrOlsts0hQcww/mkYTHsZcXrAodck/9KXBlxn4uC6OqBJJSdiGZ6L8w3f5nvTQfSZTpNz5n5vmlCF3g3E2g6/NeXKNrlpnptJgEunOdSG8/G0EjUzwfYTnAQ6EsvRGT00lLXQ5WZy4kfO6hvL09jeRpmXtQ79m7Y7F4UgqLGlSetJKBcc7YvPNSucgA3FcnR2EXUEjg6uqk1oxZKmxybQkl6UOInDO10kzTcLlRd0IRsqE6bc3SBXCyGvWODSNj8Sy/E5SjRm+zcMPReJIeWyl1tMNH2xWEidyKcMh1xa0+lgVkCFugGIQgsgM2hThlotNGGMvQDxl+0Y7QyLNN8CYcRSrf/LDS/GnLwHXTlrO8ydUonMJYAiP9opCeoz1f4TyTKxsQtgFhpuL+SOni9FAU92kczcLyeqFppP/T79qznbQvm38itw3Tw/3aMF6YZO+5n2au7cMGcYyXHkihpi1866YhhkAtwjAa1VctnM5NTbZPZfkPf6FC/wUfn8ACn/IR87fws4TGOmWtKwQDqNS4cp7go81tDIGWB4Nk0JNs7QWxlZCwQFw5goEU2M/+IQ7Z79Llk7ovAx/n43ZjId36v1YGJxybLBCiD7P9bQ2Hlk3zwBOU7IKqiTSds1MDwsjbaBk4kBRJimHP76C7TTFBDUfPEdMZqR9mQ/MzFEbch6wYOmr26EGyDEkQ+NszwID+039ABGlys15syYAc7egDyim48HpJlB5Xco+JumPZrpZbjUwFbYE3NpzsiZxeHjIAAlYGAsDzed0yY8F1ILlMx22sykQ/CdAA+2kbS131wocn/XcgLXmnAD7jfBRR92+MhQKkE6Yixnzq97BBgbYKLK/8h1sUT5TpDGBAEBjQkq2sz2kxOg/QQUMQNYnJpezibUf8C/FGwZdGsdyuOtZ+k9SskEdgK2cHil9dT9Hp+xNFDiy5mBT8EHIhcqBz8BOahCO0xArxPwJDlYMVnm+1M8vSmwz6CcOdcPYXDfNBcHGLVmia3WVPcGqN4wIrDIDQgJZIWKm1H7gQRxGBoRfjdBZarxtplMtx9bHUNXyM6hnDtjEGCEVzrOytVxDD2t2HLSKWK5wbZD4/GRAIB/42fIAmzLJcipNZyJYScYlA4Jbvcto7MoZ89eRBhR4B4OkaG7whBd7Qndy24BG059OCoGgJZkqwZOJ8qYtFd7RNnrlJrjejWEOIgr51DOnwMJAVi4HNTL3SqHwbyfT6vEXs661Sn6AS4yw6cjglzs7Cx5tkQQEMkWhYKHhXH3AsqlMymZBxYcg2gYKgrnO/LsNWFov90ilYp+nSSUHkFODBNln5qh0waZGKx2LK7ccFYnHmznClwrsjz0gmb65fU1QqDZZHISZEA8ZLkw7nidYhYKQ2jfz5jLQ9SPS8fUfe3cUDQaN43xjDg3ORANZbkwAACiBE9dpLJcLum3DQzstZITEfJyUE/l2uAFYXpRPzecYfrNU6IpbWk2slDvs83/AiYouhofwAgBIOjL9kKlHhDtZf3ccrYriYbhGnDhSbPpF/+kDL+GkIL278QklG8/e84sikaQvsGjRHZMc6FAkARDAQ2/cXFdKLedvwuiAUVh89BsbqWh4GbTQXsRndn3a84CRocSboRqL83baHw0WbqjZmSzt5wGfOO5xETDVN3J1Pevk3hk8tJQftW5xH2zYbh9rIjc6nCBxvfneIRTQCRgKDeS3HN29CNDGhtoAnDQszRAAm6Mtl7yu0juO1MbaVxJw8/QEIkgEpLJLSb7xfO9JQ2MtBTNkRVLO/kiyd1njTc0haRJZOfXxJOGpFYkdx42fi9LYzeSBjfvHppeM0tchhaLx7V+geQrLA1NhD5b0OlcKBId7LpQn3yJ5GssLY30FshyKkhiMdoHFGO/RvJVloYGj8rF8+34qlTHy32d5OssSCPouGi17y+wmCtJvlzj11mARp5o7FFWHKnDjn+ivp9h+dGcr8wK1pxz/ONvY8Fzp0lV4uSw7r+BhVTFPPZTylHl/wCWLNQ6TnKlqwAAAABJRU5ErkJggg==" alt="Logo SMAN 1 Pronojiwo"></div>
+    <h1 style="margin-bottom:10px;">🔒 Akses Ditutup</h1>
+    <p id="lockMsg" style="color:var(--muted);font-size:.88rem;"></p>
+    <p style="font-size:.75rem;color:var(--muted);margin-top:16px;">Jam belajar dibuka setiap hari pukul <b>05.00–20.00 WIB</b>.</p>
+  </div>
+</div>
+
+<!-- ============ LOGIN ============ -->
+<div id="loginScreen">
+  <div class="loginCard">
+    <div class="logoWrap"><img src="data:image/png;base64,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" alt="Logo SMAN 1 Pronojiwo"></div>
+    <h1>SMA Negeri 1 Pronojiwo</h1>
+    <div class="sub">Media Pembelajaran Interaktif Bahasa Indonesia</div>
+    <div class="matapel">📘 MATERI: TEKS ANEKDOT — KELAS X</div>
+    <form id="loginForm">
+      <label for="fNama">Nama Lengkap</label>
+      <input type="text" id="fNama" placeholder="TULIS NAMA (otomatis huruf kapital)" autocomplete="off" required>
+      <label for="fKelas">Kelas</label>
+      <select id="fKelas" required>
+        <option value="">— Pilih Kelas —</option>
+        <option>X-1</option><option>X-2</option><option>X-3</option>
+        <option>X-4</option><option>X-5</option><option>X-6</option>
+      </select>
+      <label for="fPass">Password</label>
+      <div class="pwWrap">
+        <input type="password" id="fPass" placeholder="Masukkan password" autocomplete="off" required>
+        <button type="button" id="togglePw">LIHAT</button>
+      </div>
+      <button type="submit" class="loginBtn">Masuk ke Pembelajaran</button>
+      <div class="loginErr" id="loginErr"></div>
+    </form>
+    <div class="loginFoot">Hubungi guru mapel jika lupa password.</div>
+  </div>
+</div>
+
+<!-- ============ APP ============ -->
+<div id="app">
+  <header class="topbar">
+    <img class="logo" src="data:image/png;base64,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" alt="Logo">
+    <div class="brandText">
+      <div class="t1">SMAN 1 Pronojiwo — Teks Anekdot</div>
+      <div class="t2">Media Pembelajaran Interaktif Bahasa Indonesia Kelas X</div>
+    </div>
+    <div class="userBadge">👤 <b id="ubNama">-</b> <span id="ubKelas">-</span> <span id="ubAkses" style="color:var(--yellow);margin-left:4px;">-</span></div>
+    <button id="logoutBtn">Keluar</button>
+    <button id="menuToggle">☰</button>
+  </header>
+  <nav class="mainnav" id="mainnav">
+    <button data-page="beranda">🏠 Beranda</button>
+    <button data-page="materi">📖 Materi Lengkap</button>
+    <button data-page="ringkasan">📝 Ringkasan</button>
+    <button data-page="proyek">🎬 Tugas Proyek</button>
+    <button data-page="kuis">🎯 Kuis Bertingkat</button>
+    <button data-page="latihan">✏️ Latihan Soal</button>
+    <button data-page="evaluasi">🧾 Evaluasi</button>
+    <button data-page="rekap">📊 Rekap Nilai Siswa</button>
+  </nav>
+
+  <main>
+    <!-- BERANDA -->
+    <section class="page" id="page-beranda">
+      <div class="heroBox">
+        <div class="badgeYellow">SEBELUM MEMULAI</div>
+        <h2>Yuk, Kenali Dulu Materi Teks Anekdot!</h2>
+        <p>Pernahkah kamu mendengar cerita lucu yang ternyata menyindir suatu kebiasaan buruk di masyarakat? Itulah <b>anekdot</b> — teks singkat yang menghibur sekaligus menyampaikan kritik sosial secara cerdas. Sebelum masuk ke materi lengkap, simak dulu ringkasan berikut agar kamu punya gambaran awal.</p>
+      </div>
+      <div class="grid2" style="margin-bottom:16px;">
+        <div class="miniCard"><h4>💡 Apa itu Anekdot?</h4><p>Cerita singkat dan lucu yang berisi kritik/sindiran terhadap suatu peristiwa nyata di masyarakat.</p></div>
+        <div class="miniCard y"><h4>🧩 Strukturnya</h4><p>Abstraksi → Orientasi → Krisis → Reaksi → Koda.</p></div>
+        <div class="miniCard"><h4>🗣️ Bentuknya</h4><p>Bisa berupa teks tulis, teks visual (komik/meme), maupun lisan seperti lawakan tunggal.</p></div>
+        <div class="miniCard y"><h4>🎯 Fungsinya</h4><p>Menyampaikan kritik sosial secara santun tanpa menyinggung secara frontal.</p></div>
+      </div>
+      <div class="card">
+        <h3>🎯 Tujuan Pembelajaran</h3>
+        <ul class="tpList" id="tpListEl"></ul>
+      </div>
+      <div class="card">
+        <h3>🗺️ Peta Perjalanan Belajarmu</h3>
+        <p style="font-size:.85rem;">Gunakan menu navigasi di atas untuk berpindah antar bagian. Menu berikutnya akan <b>muncul otomatis</b> setelah kamu menyelesaikan tahap sebelumnya:</p>
+        <ol style="font-size:.85rem;">
+          <li><b>Materi Lengkap</b> — pelajari konsep secara detail.</li>
+          <li><b>Ringkasan</b> — ulang poin-poin penting. <i>(muncul setelah semua materi dibaca)</i></li>
+          <li><b>Tugas Proyek</b> — praktikkan lewat 3 proyek nyata, dikumpulkan ke guru &amp; diverifikasi dengan kode.</li>
+          <li><b>Kuis Bertingkat</b> — uji pemahaman dari level mudah ke sulit. <i>(dibuka dengan kode dari guru)</i></li>
+          <li><b>Latihan Soal</b> — asah kemampuan dengan pembahasan langsung.</li>
+          <li><b>Evaluasi</b> — tes akhir dengan penilaian otomatis. <i>(dibuka dengan kode dari guru)</i></li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- MATERI -->
+    <section class="page" id="page-materi">
+      <div class="pageHead"><div class="eyebrow">MATERI LENGKAP</div><h2>Teks Anekdot</h2></div>
+      <div class="subtabs" id="subtabsEl"></div>
+      <div class="card" id="matContent"></div>
+    </section>
+
+    <!-- RINGKASAN -->
+    <section class="page" id="page-ringkasan">
+      <div class="pageHead"><div class="eyebrow">RINGKASAN MATERI</div><h2>Poin-Poin Penting</h2></div>
+      <div class="card" id="ringkasanContent"></div>
+    </section>
+
+    <!-- PROYEK -->
+    <section class="page" id="page-proyek">
+      <div class="pageHead"><div class="eyebrow">PRAKTIK</div><h2>3 Tugas Proyek</h2></div>
+      <div id="proyekContent"></div>
+    </section>
+
+    <!-- KUIS -->
+    <section class="page" id="page-kuis">
+      <div class="pageHead"><div class="eyebrow">UJI PEMAHAMAN</div><h2>Kuis Bertingkat (5 Level)</h2></div>
+      <div class="card" id="kuisHome"></div>
+      <div id="kuisRunner"></div>
+    </section>
+
+    <!-- LATIHAN -->
+    <section class="page" id="page-latihan">
+      <div class="pageHead"><div class="eyebrow">ASAH KEMAMPUAN</div><h2>10 Soal Latihan</h2></div>
+      <div class="card"><p style="font-size:.85rem;margin:0;">Kerjakan lalu tekan <b>Cek Jawaban</b> pada tiap soal untuk melihat kunci &amp; pembahasan.</p>
+        <p style="font-size:.8rem;margin:8px 0 0;color:var(--muted);" id="latihanProgressLabel">Progres: 0/10 soal sudah dicek.</p>
+        <p style="font-size:.78rem;margin:4px 0 0;color:var(--muted);">🔒 Menu Evaluasi muncul setelah semua soal di halaman ini kamu cek jawabannya <b>dan</b> memasukkan kode buka Evaluasi dari guru.</p></div>
+      <div id="evalGateBox"></div>
+      <div class="card" id="latihanContent"></div>
+    </section>
+
+    <!-- EVALUASI -->
+    <section class="page" id="page-evaluasi">
+      <div class="pageHead"><div class="eyebrow">PENILAIAN AKHIR</div><h2>10 Soal Evaluasi</h2></div>
+      <div class="card" id="evalIntro">
+        <p style="font-size:.85rem;margin:0;">Evaluasi ini terdiri atas 5 jenis soal model AKM: Pilihan Ganda, Pilihan Ganda Kompleks, Isian Singkat, Benar‑Salah, dan Menjodohkan. Jawab seluruh soal lalu tekan <b>Selesai &amp; Lihat Nilai</b> untuk penilaian otomatis.</p>
+      </div>
+      <div class="card" id="evalContent"></div>
+      <div id="evalResult"></div>
+    </section>
+
+    <!-- REKAP -->
+    <section class="page" id="page-rekap">
+      <div class="pageHead"><div class="eyebrow">PROGRES BELAJAR</div><h2>Rekap Nilai Siswa</h2></div>
+      <div class="card" id="rekapStatus"><p style="font-size:.85rem;margin:0;">Memuat progres nilaimu…</p></div>
+      <div id="rekapTableWrap"></div>
+    </section>
+  </main>
+  <footer class="appfoot">© 2026 SMA Negeri 1 Pronojiwo — Media Pembelajaran Interaktif Teks Anekdot</footer>
+</div>
+
+<!-- PANEL GURU (tersembunyi): buka dengan menambahkan #guru di akhir tautan -->
+<div id="guruPanel" style="display:none;position:fixed;inset:0;z-index:99999;background:#f4f6fb;overflow:auto;padding:24px 16px;">
+  <div style="max-width:760px;margin:0 auto;background:#fff;border-radius:14px;padding:22px;box-shadow:0 6px 24px rgba(0,0,0,.12);">
+    <h2 style="margin:0 0 6px;color:#1a2b4a;">🔑 Panel Guru</h2>
+    <div id="guruLogin">
+      <p style="font-size:.88rem;color:#555;">Masukkan password guru.</p>
+      <input type="password" id="guruPass" placeholder="Password guru" style="width:100%;padding:10px 12px;border:1.5px solid #ccd;border-radius:9px;box-sizing:border-box;">
+      <div id="guruErr" style="color:#c0392b;font-size:.82rem;margin:6px 0;"></div>
+      <button id="guruMasuk" class="btnPrimary">Masuk</button>
+      <button id="guruTutup" class="btnGhost" style="margin-left:6px;">Tutup</button>
+    </div>
+    <div id="guruIsi" style="display:none;">
+      <p style="font-size:.88rem;color:#555;">Kode tiap kelas: 3 kode verifikasi proyek + kode buka Kuis + kode buka Evaluasi. Isi/acak lalu klik <b>Buat Hash</b>. Kelompok kode yang dibiarkan kosong seluruhnya tidak akan diganti.</p>
+      <div id="guruGrid" style="font-size:.8rem;overflow-x:auto;"></div>
+      <button id="guruAcakP" class="btnGhost" style="margin-top:8px;">🎲 Acak Kode Proyek</button>
+      <button id="guruAcakG" class="btnGhost" style="margin-top:8px;margin-left:6px;">🎲 Acak Kode Kuis &amp; Evaluasi</button>
+      <button id="guruBuat" class="btnPrimary" style="margin-top:8px;margin-left:6px;">Buat Hash</button>
+      <p style="font-size:.82rem;color:#555;margin-top:14px;">Salin hasil di bawah, lalu ganti baris yang namanya sama di file index.html (<code>const PROYEK_KODE_HASH=...;</code> dan/atau <code>const KODE_GATE_HASH=...;</code>):</p>
+      <textarea id="guruOut" readonly style="width:100%;height:140px;font-family:monospace;font-size:.72rem;box-sizing:border-box;"></textarea>
+      <button id="guruSalin" class="btnGhost" style="margin-top:8px;">Salin</button>
+      <button id="guruTutup2" class="btnGhost" style="margin-top:8px;margin-left:6px;">Tutup Panel</button>
+    </div>
+  </div>
+</div>
+<script>
+/* ================= DATA: TUJUAN PEMBELAJARAN ================= */
+const TP = [
+"Menyimak teks anekdot aural agar dapat mengevaluasi gagasan dan pesan yang disampaikan dalam teks monolog lawakan tunggal secara kritis dan reflektif.",
+"Memirsa teks anekdot agar dapat menginterpretasi informasi untuk mengungkapkan gagasan dan perasaan simpati, peduli, empati, dan/atau pendapat pro/kontra dari teks visual yang dipirsa.",
+"Menggunakan kaidah-kaidah bahasa yang digunakan dalam menyampaikan kritik sosial.",
+"Menulis teks eksposisi hasil penelitian sederhana sebagai sumber penyampaian kritik sosial yang akurat, dan menulis teks anekdot dengan informasi akurat merujuk sumber valid dalam bentuk media kreatif.",
+"Menampilkan lawakan tunggal (stand up comedy) sebagai sarana menyampaikan kritik terhadap fenomena yang terjadi dengan memperhatikan kesantunan dalam berbicara maupun bersikap."
+];
+
+/* ================= DATA: MATERI LENGKAP ================= */
+const MATERI = [
+{t:"Pengertian Anekdot", html:`
+<p><b>Teks anekdot</b> adalah teks narasi singkat yang bersifat lucu/jenaka namun mengandung kritik atau sindiran terhadap suatu peristiwa, fenomena, atau kebiasaan yang terjadi di masyarakat, biasanya melibatkan tokoh publik, profesi tertentu, atau situasi sehari-hari.</p>
+<div class="exampleBox"><b>Ingat:</b> Anekdot bukan sekadar lelucon. Di balik kelucuannya, selalu ada <b>pesan moral atau kritik sosial</b> yang ingin disampaikan penulis kepada pembaca/pendengar.</div>
+<p>Kata "anekdot" berasal dari bahasa Yunani <i>anekdota</i> yang berarti "hal-hal yang tidak diterbitkan/dipublikasikan", awalnya merujuk pada kisah-kisah pribadi tokoh sejarah. Kini, anekdot berkembang menjadi salah satu genre teks yang efektif untuk mengkritik fenomena sosial dengan cara yang menghibur dan tidak menyinggung secara frontal.</p>`},
+
+{t:"Ciri-Ciri Teks Anekdot", html:`
+<ul>
+<li><b>Bersifat humor/lucu</b> — mengandung unsur kejenakaan yang mengundang tawa atau senyum pembaca. <i>Contoh:</i> jawaban tak terduga seorang tokoh yang membuat pembaca tersenyum.</li>
+<li><b>Mengandung kritik atau sindiran</b> — menyampaikan pesan/kritik terhadap fenomena, kebijakan, atau perilaku tertentu. <i>Contoh:</i> anekdot tentang pejabat yang baru rajin bekerja saat ada kunjungan atasan, menyindir budaya "asal bapak senang".</li>
+<li><b>Bersifat menggelitik</b> — menampilkan sesuatu yang tidak terduga atau kontradiktif dengan kenyataan yang seharusnya. <i>Contoh:</i> polisi lalu lintas yang justru melanggar rambu lalu lintas sendiri.</li>
+<li><b>Terkait tokoh/orang penting atau kejadian nyata</b> — sering melibatkan tokoh publik, pejabat, atau profesi tertentu meski bisa juga dilebih-lebihkan (fiksi ringan). <i>Contoh:</i> tokoh "guru", "dosen", "pejabat", atau "pedagang" yang mewakili profesi tertentu.</li>
+<li><b>Bersifat singkat</b> — disajikan padat dan tidak bertele-tele, biasanya hanya beberapa paragraf.</li>
+<li><b>Memiliki pesan moral atau makna tersirat</b> — pembaca diajak merenungkan pesan di balik ceritanya, bukan sekadar tertawa lalu lupa.</li>
+</ul>
+<div class="exampleBox"><b>Perbedaan Anekdot dan Humor Biasa:</b> Humor biasa hanya bertujuan membuat orang tertawa (misalnya lelucon "kenapa ayam menyeberang jalan"), sedangkan anekdot memiliki <b>tujuan tambahan</b> yaitu menyampaikan kritik atau pesan moral tertentu terhadap suatu fenomena sosial nyata.</div>`},
+
+{t:"Struktur Teks Anekdot", html:`
+<p>Teks anekdot memiliki struktur yang membangun alur ceritanya secara utuh:</p>
+<table class="structTable">
+<tr><th>Struktur</th><th>Penjelasan</th></tr>
+<tr><td><b>Abstraksi</b></td><td>Bagian pembuka yang memberi gambaran awal tentang isi teks (sifatnya opsional/boleh ada boleh tidak).</td></tr>
+<tr><td><b>Orientasi</b></td><td>Bagian yang menjelaskan latar belakang peristiwa: waktu, tempat, situasi, serta pengenalan tokoh.</td></tr>
+<tr><td><b>Krisis</b></td><td>Puncak masalah atau kejadian tidak biasa/tidak terduga yang menjadi sumber kelucuan dan kritik.</td></tr>
+<tr><td><b>Reaksi</b></td><td>Tanggapan atau cara tokoh menyelesaikan/menanggapi krisis yang terjadi, biasanya di sinilah letak kejutan lucu.</td></tr>
+<tr><td><b>Koda</b></td><td>Bagian penutup berisi simpulan, perubahan sikap tokoh, atau penegasan pesan cerita (sifatnya juga opsional).</td></tr>
+</table>
+<div class="exampleBox"><b>Contoh singkat:</b><br>
+<i>Abstraksi:</i> Di sebuah sekolah, siswa sering terlambat masuk kelas.<br>
+<i>Orientasi:</i> Suatu pagi, seorang guru piket berdiri di gerbang sambil membawa buku catatan.<br>
+<i>Krisis:</i> "Kenapa terlambat?" tanya guru. Siswa menjawab, "Saya menunggu jam tangan saya jalan lebih cepat, Pak, biar tidak telat."<br>
+<i>Reaksi:</i> Guru tertegun sejenak lalu tertawa geli mendengar alasan itu.<br>
+<i>Koda:</i> Sejak hari itu, sekolah memasang jam besar di gerbang agar semua siswa punya acuan waktu yang sama.</div>`},
+
+{t:"Kaidah Kebahasaan", html:`
+<p>Beberapa unsur kebahasaan yang khas digunakan dalam teks anekdot:</p>
+<ul>
+<li><b>Kalimat retoris</b> — kalimat pertanyaan yang tidak memerlukan jawaban karena jawabannya sudah jelas, digunakan untuk menegaskan sindiran. <i>Contoh:</i> "Apa gunanya aturan kalau tidak pernah ditegakkan?"</li>
+<li><b>Konjungsi temporal (waktu)</b> — kata penghubung seperti <i>kemudian, lalu, setelah itu, akhirnya</i> untuk menunjukkan urutan peristiwa. <i>Contoh:</i> "Ia menunggu sebentar, <u>kemudian</u> baru berani bertanya."</li>
+<li><b>Kata kerja aksi/material</b> — kata kerja yang menunjukkan tindakan tokoh secara jelas, misalnya <i>berkata, berjalan, menjawab, menunjuk</i>. <i>Contoh:</i> "Ia <u>menunjuk</u> papan pengumuman sambil <u>berkata</u> tegas."</li>
+<li><b>Kalimat langsung (dialog)</b> — anekdot sering memuat percakapan antartokoh yang ditandai tanda petik. <i>Contoh:</i> Guru berkata, "Kenapa terlambat lagi?"</li>
+<li><b>Majas ironi/sindiran</b> — gaya bahasa yang menyampaikan makna berlawanan/menyindir secara halus. <i>Contoh:</i> "Hebat sekali, baru datang saat rapat sudah selesai."</li>
+<li><b>Penggunaan konjungsi sebab-akibat</b> — seperti <i>karena, sehingga, akibatnya</i> untuk menjelaskan hubungan logis antarperistiwa. <i>Contoh:</i> "Ia terlambat <u>karena</u> menunggu jam tangannya berjalan lebih cepat, <u>sehingga</u> seisi kelas tertawa."</li>
+</ul>
+<div class="exampleBox"><b>Contoh dalam satu kalimat utuh:</b> "Pak Guru bertanya dengan nada menyindir, <i>'Apa gunanya jam kalau kamu selalu datang terlambat?'</i> (kalimat retoris) <i>Kemudian</i> (konjungsi temporal) siswa itu <i>menjawab</i> (kata kerja aksi) sambil tersenyum, <i>'Karena</i> jam saya lebih pemalu dari saya, Pak.' (konjungsi sebab-akibat + ironi)"</div>`},
+
+{t:"Menyimak & Memirsa Anekdot", html:`
+<p><b>Menyimak teks anekdot aural</b> berarti mendengarkan penyampaian anekdot secara lisan, misalnya dalam bentuk lawakan tunggal (stand up comedy) atau cerita lisan. Saat menyimak, kamu perlu:</p>
+<ul>
+<li>Mengidentifikasi gagasan utama dan pesan yang disampaikan pembicara.</li>
+<li>Mengevaluasi apakah kritik yang disampaikan relevan dan berdasar fakta.</li>
+<li>Bersikap kritis dan reflektif — tidak sekadar menikmati kelucuannya, tetapi juga memikirkan maknanya.</li>
+</ul>
+<p><b>Memirsa teks anekdot visual</b> berarti mengamati anekdot yang disajikan dalam bentuk gambar, komik strip, meme, atau video pendek. Ketika memirsa, kamu perlu:</p>
+<ul>
+<li>Menginterpretasi makna gambar/visual yang ditampilkan secara utuh (ekspresi, simbol, teks pendukung).</li>
+<li>Mengungkapkan gagasan serta perasaan seperti simpati, peduli, empati, atau pendapat pro/kontra terhadap isu yang diangkat.</li>
+<li>Menghubungkan visual tersebut dengan konteks sosial yang sedang terjadi.</li>
+</ul>`},
+
+{t:"Kritik Sosial dalam Anekdot", html:`
+<p>Anekdot menjadi media yang efektif untuk menyampaikan <b>kritik sosial</b> karena disampaikan secara tidak langsung dan dibalut humor, sehingga pesan lebih mudah diterima tanpa menimbulkan konflik terbuka. Kritik sosial dalam anekdot biasanya menyasar:</p>
+<ul>
+<li>Perilaku pejabat/birokrasi yang tidak sesuai harapan masyarakat. <i>Contoh:</i> anekdot tentang pejabat yang hanya muncul saat ada kamera wartawan.</li>
+<li>Kebiasaan buruk dalam kehidupan sehari-hari (antre, kedisiplinan, kejujuran). <i>Contoh:</i> anekdot tentang orang yang menyerobot antrean lalu beralasan "titip tempat".</li>
+<li>Ketimpangan sosial, ekonomi, atau pelayanan publik. <i>Contoh:</i> anekdot tentang layanan rumah sakit yang lambat bagi pasien tanpa "koneksi".</li>
+<li>Fenomena hukum dan keadilan yang dianggap timpang. <i>Contoh:</i> anekdot tentang hukum yang "tumpul ke atas, tajam ke bawah".</li>
+</ul>
+<div class="exampleBox"><b>Nilai penting:</b> Kritik dalam anekdot harus tetap <b>santun</b>, tidak menyerang pribadi/SARA, dan disampaikan dengan tujuan membangun kesadaran, bukan menjatuhkan.</div>`},
+
+{t:"Teks Eksposisi sebagai Dasar Anekdot", html:`
+<p>Sebelum menulis anekdot yang berisi kritik sosial akurat, penulis perlu melakukan <b>penelitian atau observasi sederhana</b> terhadap fenomena yang akan diangkat, lalu menuliskannya dulu dalam bentuk <b>teks eksposisi</b> — teks yang memaparkan gagasan secara lugas, logis, dan berbasis data/fakta.</p>
+<p>Struktur teks eksposisi hasil penelitian sederhana:</p>
+<ol>
+<li><b>Tesis</b> — pernyataan pendapat/topik awal tentang fenomena yang diteliti.</li>
+<li><b>Argumentasi</b> — data, fakta, atau hasil pengamatan yang mendukung tesis.</li>
+<li><b>Penegasan ulang</b> — simpulan yang menegaskan kembali pendapat awal.</li>
+</ol>
+<div class="exampleBox"><b>Contoh singkat teks eksposisi:</b><br>
+<i>Tesis:</i> Kedisiplinan siswa dalam membuang sampah pada tempatnya masih rendah.<br>
+<i>Argumentasi:</i> Berdasarkan pengamatan selama satu minggu, ditemukan rata-rata 15 bungkus jajanan berserakan di halaman sekolah setiap hari, padahal tempat sampah tersedia di setiap sudut kelas.<br>
+<i>Penegasan ulang:</i> Oleh karena itu, diperlukan kesadaran dan pembiasaan bersama agar lingkungan sekolah tetap bersih.</div>
+<p>Fenomena dan data pada teks eksposisi di atas itulah yang kemudian "dikemas ulang" secara naratif dan jenaka menjadi teks anekdot, dengan tetap merujuk pada sumber informasi yang valid (berita, hasil wawancara, observasi langsung, atau data resmi).</p>`},
+
+{t:"Langkah Menulis Teks Anekdot", html:`
+<ol>
+<li><b>Menentukan tema/fenomena</b> — pilih isu sosial aktual yang ingin dikritik. <i>Contoh:</i> kebiasaan membuang sampah sembarangan di sekolah.</li>
+<li><b>Mengumpulkan data</b> — lakukan observasi/penelitian sederhana dan cari sumber informasi yang valid. <i>Contoh:</i> mencatat jumlah sampah yang ditemukan setiap hari selama seminggu.</li>
+<li><b>Menyusun teks eksposisi singkat</b> — rangkum fakta yang ditemukan secara lugas (lihat contoh pada subtopik sebelumnya).</li>
+<li><b>Menentukan tokoh dan alur</b> — pilih tokoh yang relevan dengan tema. <i>Contoh:</i> tokoh "petugas kebersihan" dan "siswa yang jajan sembarangan".</li>
+<li><b>Menyusun kerangka struktur</b> — Abstraksi (opsional), Orientasi, Krisis, Reaksi, Koda.</li>
+<li><b>Mengembangkan menjadi teks jenaka</b> — sisipkan kelucuan, kalimat retoris, dan dialog pada bagian krisis/reaksi. <i>Contoh:</i> siswa beralasan "sampah ini kan biodegradable, Pak, nanti hilang sendiri."</li>
+<li><b>Menyunting</b> — periksa kembali kesantunan bahasa, ejaan, dan kejelasan pesan kritik.</li>
+<li><b>Mengemas dalam media kreatif</b> — dapat berupa teks tulis, komik, infografis, atau video pendek.</li>
+</ol>`},
+
+{t:"Lawakan Tunggal (Stand Up Comedy)", html:`
+<p><b>Lawakan tunggal (stand up comedy)</b> adalah bentuk pertunjukan anekdot lisan yang dibawakan oleh satu orang komika di depan penonton, menyampaikan kritik terhadap fenomena sosial dengan gaya bertutur yang jenaka (biasa disebut <i>bit</i> atau <i>materi</i>).</p>
+<p>Hal yang perlu diperhatikan saat menampilkan lawakan tunggal:</p>
+<ul>
+<li><b>Kesantunan berbicara</b> — hindari kata kasar, hinaan pribadi, atau isu SARA.</li>
+<li><b>Kejelasan pesan kritik</b> — penonton harus tetap memahami maksud kritik di balik lelucon.</li>
+<li><b>Penguasaan panggung</b> — intonasi, ekspresi, dan timing lucu (<i>punchline</i>) yang tepat.</li>
+<li><b>Berdasarkan observasi nyata</b> — materi sebaiknya diangkat dari fenomena aktual dan dapat dipertanggungjawabkan.</li>
+</ul>`},
+
+{t:"Contoh & Analisis Teks Anekdot", html:`
+<div class="exampleBox">
+<b>Teks: "Dosa Ringan"</b><br>
+<i>(Orientasi)</i> Suatu siang, seorang mahasiswa bertanya kepada dosennya yang terkenal disiplin soal absensi.<br>
+<i>(Krisis)</i> "Pak, kalau saya telat sepuluh menit karena hujan, apakah dianggap dosa besar?" Dosen menjawab tegas, "Dosa besar itu kalau kamu terlambat, lalu berbohong bilang macet padahal baru bangun tidur."<br>
+<i>(Reaksi)</i> Mahasiswa itu terdiam, lalu berkata pelan, "Kalau begitu, saya baru saja menambah dosa, Pak."<br>
+<i>(Koda)</i> Seisi kelas tertawa, dan sejak saat itu ia selalu datang lebih awal.
+</div>
+<p><b>Analisis:</b> Kelucuan anekdot ini muncul dari pengakuan tak terduga sang mahasiswa terhadap kesalahannya sendiri (bagian Reaksi). Kritik sosial yang disampaikan adalah kebiasaan berbohong untuk menutupi kesalahan — sebuah fenomena yang sering terjadi di lingkungan sekolah/kampus maupun masyarakat luas. Bahasa yang digunakan singkat, memakai dialog langsung, dan diakhiri koda yang menunjukkan perubahan sikap tokoh.</p>`}
+];
+
+/* ================= RINGKASAN ================= */
+const RINGKASAN_HTML = `
+<ul>
+<li><b>Pengertian:</b> teks narasi singkat, lucu, dan mengandung kritik/sindiran sosial.</li>
+<li><b>Ciri-ciri:</b> humor, mengandung kritik, menggelitik, bertokoh, singkat, punya pesan moral.</li>
+<li><b>Struktur:</b> Abstraksi – Orientasi – Krisis – Reaksi – Koda.</li>
+<li><b>Kaidah kebahasaan:</b> kalimat retoris, konjungsi temporal, kata kerja aksi, dialog langsung, majas ironi.</li>
+<li><b>Menyimak/memirsa:</b> evaluasi pesan secara kritis-reflektif (aural) dan interpretasi makna visual (memirsa).</li>
+<li><b>Kritik sosial:</b> disampaikan tidak langsung lewat humor agar mudah diterima dan tetap santun.</li>
+<li><b>Dasar penulisan:</b> teks eksposisi hasil penelitian/observasi sederhana dengan sumber valid.</li>
+<li><b>Langkah menulis:</b> tentukan tema → kumpulkan data → susun eksposisi → tentukan tokoh & alur → susun struktur → kembangkan jadi jenaka → sunting → kemas kreatif.</li>
+<li><b>Lawakan tunggal:</b> anekdot lisan oleh satu komika, wajib santun dan berbasis fenomena nyata.</li>
+</ul>`;
+
+/* ================= PROYEK ================= */
+const PROYEK = [
+{judul:"Proyek 1: Menulis Teks Anekdot Berbasis Penelitian Sederhana", tag:["Menulis","Individu/Kelompok"],
+ desc:"Lakukan observasi/penelitian sederhana terhadap satu fenomena sosial di lingkungan sekitar (sekolah/masyarakat), susun temuannya dalam teks eksposisi singkat, lalu ubah menjadi teks anekdot yang utuh.",
+ langkah:["Pilih fenomena sosial yang akan diangkat.","Kumpulkan data melalui pengamatan/wawancara singkat.","Tulis teks eksposisi berisi tesis, argumentasi, penegasan ulang.","Kembangkan menjadi teks anekdot dengan struktur lengkap.","Kumpulkan dalam bentuk dokumen tertulis."],
+ rubrik:["Keakuratan data & sumber (25%)","Kelengkapan struktur anekdot (25%)","Kaidah kebahasaan (25%)","Kreativitas & kesantunan kritik (25%)"]},
+{judul:"Proyek 2: Media Kreatif Anekdot Visual", tag:["Visual","Kelompok"],
+ desc:"Buat anekdot dalam bentuk media visual kreatif (komik strip, poster meme, atau video pendek) yang mengangkat kritik sosial berdasarkan fenomena aktual di sekitar kalian.",
+ langkah:["Tentukan fenomena & pesan kritik yang ingin disampaikan.","Rancang naskah/storyboard singkat.","Produksi media (gambar/komik/video) sesuai struktur anekdot.","Presentasikan hasil karya di depan kelas."],
+ rubrik:["Kesesuaian pesan dengan struktur anekdot (25%)","Kualitas visual & kreativitas (25%)","Kejelasan pesan kritik (25%)","Kerja sama kelompok (25%)"]},
+{judul:"Proyek 3: Pertunjukan Lawakan Tunggal (Stand Up Comedy)", tag:["Lisan","Individu"],
+ desc:"Tampilkan lawakan tunggal singkat (3–5 menit) di depan kelas yang menyampaikan kritik terhadap fenomena sosial di sekitar kalian, dengan tetap memperhatikan kesantunan berbicara dan bersikap.",
+ langkah:["Pilih fenomena sosial yang aktual & relevan.","Susun naskah/bit dengan struktur anekdot lisan.","Latih intonasi, ekspresi, dan timing lucu (punchline).","Tampilkan di depan kelas, direkam bila memungkinkan."],
+ rubrik:["Kejelasan pesan kritik (25%)","Kesantunan berbicara & sikap (25%)","Penguasaan panggung/ekspresi (25%)","Orisinalitas materi (25%)"]}
+];
+
+/* ================= KODE VERIFIKASI TUGAS PROYEK (DISAMARKAN) =================
+   Kode asli TIDAK tersimpan di file ini, hanya "sidik jari" (hash) satu arah,
+   sehingga tidak bisa dibaca siswa lewat "lihat sumber halaman".
+   Setiap kelas (X-1 s/d X-6) punya 3 kode sendiri (Proyek 1, 2, 3). Untuk mengganti
+   kode, buka Panel Guru (tambahkan #guru di akhir tautan), buat hash baru, lalu
+   tempel hasilnya menggantikan baris di bawah ini. */
+/* SHA-256 murni JS (sinkron, jalan juga di file:// tanpa HTTPS) */
+function sha256hex(msg){
+  function R(n,x){return (x>>>n)|(x<<(32-n));}
+  var K=[0x428a2f98,0x71374491,0xb5c0fbcf,0xe9b5dba5,0x3956c25b,0x59f111f1,0x923f82a4,0xab1c5ed5,0xd807aa98,0x12835b01,0x243185be,0x550c7dc3,0x72be5d74,0x80deb1fe,0x9bdc06a7,0xc19bf174,0xe49b69c1,0xefbe4786,0x0fc19dc6,0x240ca1cc,0x2de92c6f,0x4a7484aa,0x5cb0a9dc,0x76f988da,0x983e5152,0xa831c66d,0xb00327c8,0xbf597fc7,0xc6e00bf3,0xd5a79147,0x06ca6351,0x14292967,0x27b70a85,0x2e1b2138,0x4d2c6dfc,0x53380d13,0x650a7354,0x766a0abb,0x81c2c92e,0x92722c85,0xa2bfe8a1,0xa81a664b,0xc24b8b70,0xc76c51a3,0xd192e819,0xd6990624,0xf40e3585,0x106aa070,0x19a4c116,0x1e376c08,0x2748774c,0x34b0bcb5,0x391c0cb3,0x4ed8aa4a,0x5b9cca4f,0x682e6ff3,0x748f82ee,0x78a5636f,0x84c87814,0x8cc70208,0x90befffa,0xa4506ceb,0xbef9a3f7,0xc67178f2];
+  var H=[0x6a09e667,0xbb67ae85,0x3c6ef372,0xa54ff53a,0x510e527f,0x9b05688c,0x1f83d9ab,0x5be0cd19];
+  var s=unescape(encodeURIComponent(msg)),l=s.length,i,j,w=[];
+  for(i=0;i<l;i++)w[i>>2]|=s.charCodeAt(i)<<(24-(i%4)*8);
+  w[l>>2]|=0x80<<(24-(l%4)*8);
+  w[((l+8>>6)+1)*16-1]=l*8;
+  for(var o=0;o<w.length;o+=16){
+    var W=new Array(64),a=H[0],b=H[1],c=H[2],d=H[3],e=H[4],f=H[5],g=H[6],h=H[7];
+    for(j=0;j<64;j++){
+      if(j<16)W[j]=w[o+j]|0;
+      else{var s0=R(7,W[j-15])^R(18,W[j-15])^(W[j-15]>>>3),s1=R(17,W[j-2])^R(19,W[j-2])^(W[j-2]>>>10);W[j]=(W[j-16]+s0+W[j-7]+s1)|0;}
+      var S1=R(6,e)^R(11,e)^R(25,e),ch=(e&f)^(~e&g),t1=(h+S1+ch+K[j]+W[j])|0,S0=R(2,a)^R(13,a)^R(22,a),mj=(a&b)^(a&c)^(b&c),t2=(S0+mj)|0;
+      h=g;g=f;f=e;e=(d+t1)|0;d=c;c=b;b=a;a=(t1+t2)|0;
+    }
+    H[0]=(H[0]+a)|0;H[1]=(H[1]+b)|0;H[2]=(H[2]+c)|0;H[3]=(H[3]+d)|0;H[4]=(H[4]+e)|0;H[5]=(H[5]+f)|0;H[6]=(H[6]+g)|0;H[7]=(H[7]+h)|0;
+  }
+  var out="";for(i=0;i<8;i++)out+=("00000000"+(H[i]>>>0).toString(16)).slice(-8);
+  return out;
+}
+/* Hash kode: diberi garam per-proyek + 10.000 putaran agar sulit ditebak */
+var KODE_SALT="anekdot-x-2026";
+function hashKode(kode,i){
+  var h=sha256hex(KODE_SALT+"|"+i+"|"+String(kode).trim().toLowerCase());
+  for(var r=0;r<10000;r++)h=sha256hex(h+KODE_SALT);
+  return h;
+}
+
+const PROYEK_KODE_HASH={"X-1": ["f3203639144febd376132b1cace44471ab0badac0886944c0f621ca21265a48d", "08fa19df15b632553b2eb748de7bb75467c06657254ef93195fd45a9133ca78a", "8922b377dd2bac5efaa8317115a64a49c6d2fe576cb4b412bd1fc8f96c4fa6a6"], "X-2": ["91692407269ff9089106cc19ad471ee4a3c2b7006148b579574a3090b465a87a", "e5a75a4445480021de4fd9cec57abd264a725cb1d123d0fcb3cdc0a73913439c", "e51bae21f6ccf7eb42738196b36130505ca083adb86f2e94858fdccb6e1e5c89"], "X-3": ["2b894521b1268aa66d600da308fb654b64c428fcc3c100fee3319bc5f5c123c7", "2211e32b9cfb474f56480b13cf87a6a64074a45d12f1d04f7827a96703766413", "74257b296fc3b89fe152704b31ed72c3653cd2eec65f38847db96f93ffab4c2b"], "X-4": ["4965749a0d4dcf0959518c529a864e7b2955ec79e29c7018d2d20c63dc7c6faa", "0271ceea467650645f1e2005806ee0a6c9f5a6a252bf54df500e63e1d290005a", "6348d19c38db8b649b42b0dd5734b0fd5d70407fbbf84c814f8d713ad34cb0d2"], "X-5": ["4354d7afcd14e893c34c29d9d9f27f6db6f9e7fd240e7349e8a16367f50029e2", "92d841ea31ba4a04711e55c92d2436d0cfa2a546d76b98433f0e161c81d57e0f", "c02f6aea56c24c4c55fa270595565926d207bd365ba05f33305c9d7b330c419d"], "X-6": ["9cdc6fe54a7a6e8004541740a6b80f001f6920ffee3643241ab745895f21d9b5", "e313900623e262aa6452a8dd508284022f61ef8e56742e2c6dc2378858039378", "c5ca65b816e01f4a83e1dfecb723c7ad24450b7d42c3e4278ff3b94023b19d95"]};
+
+/* Kode BUKA menu Kuis Bertingkat & Evaluasi dari guru (per kelas, disamarkan/hash).
+   Guru memberikan kode ini saat siswa siap/diawasi mengerjakan. */
+const KODE_GATE_HASH={"X-1": {"kuis": "4d837a6b3fc91b912c5ff7b750b28c8b7476e5b49b45aa8af21b19a29bc3fc38", "eval": "8cbbce1c6431514d64e5c675510a461605d47884b70a3a9f990d2dc00151b8e6"}, "X-2": {"kuis": "09d6187d9ce6f5da957a72e62fbb05014ea9f79280c8fef6903ebdbae3a1440e", "eval": "6b28c15726939165ef758b349350bdb5db153cb139afa9da2490784d27b89d1a"}, "X-3": {"kuis": "910947b9d5aa3ca30e3fd60047a5736efbf645d717a7f638ce63a278967429b2", "eval": "7fe9a7098f1172e26897906c9e9501161ad270c4d6ab449a5932c0f9d68b81bd"}, "X-4": {"kuis": "49396342bf30eb6e1c52551d9f3190b6f1205b4604cc1270b134023d0fdb091e", "eval": "e4a40e116e3a161cba2288fee26ec5e2335c03804d3e42c02d6b832f6fd8b3b9"}, "X-5": {"kuis": "b690c997a7a95aa2119523326439a3ba71732460cb6ac2e43b775f5373e6a01e", "eval": "f474c61f733f795db761aa89fdb8920018a7f70745f93339741ea4cef718b7db"}, "X-6": {"kuis": "58e02a22b7cfc901b4f341deab1a9dfba2e8e1cc4e51665030a0660f73ff8ae7", "eval": "4625bd3277fcf3afa861c63a9ad9639df07ad1d8ccbb9a8b1c0c87a4b24cb14c"}};
+function cekKodeGate(kind,val){
+  const hs=KODE_GATE_HASH[USER.kelas];
+  return !!hs&&hashKode(val,USER.kelas+"#"+kind)===hs[kind];
+}
+/* Jalankan pengecekan kode (agak berat di HP lambat) dengan umpan balik "Memeriksa…" */
+function withBusy(btn,fn){
+  if(btn.dataset.busy)return;
+  btn.dataset.busy="1";const t=btn.textContent;btn.disabled=true;btn.textContent="Memeriksa…";
+  setTimeout(()=>{try{fn();}finally{btn.disabled=false;btn.textContent=t;delete btn.dataset.busy;}},40);
+}
+/* Kotak input kode buka. kind: "kuis" | "eval" -> menyimpan progress.kuisOpen / progress.evalOpen */
+function renderGateBox(host,kind,judul,onOk){
+  if(progress[kind+"Open"]){
+    host.innerHTML=`<div class="card"><p class="pcStatus" style="color:var(--green);font-weight:700;margin:0;">✅ ${judul} sudah dibuka dengan kode dari guru.</p></div>`;
+    return;
+  }
+  host.innerHTML=`<div class="card"><h4 style="margin:0 0 6px;color:var(--navy);">🔐 ${judul}</h4>
+    <p style="font-size:.83rem;margin:0 0 10px;">Minta <b>kode buka</b> kepada guru. Menu ini tidak akan muncul sebelum kode yang benar dimasukkan.</p>
+    <div class="pcRow" style="display:flex;gap:8px;flex-wrap:wrap;"><input type="text" class="gateInput" placeholder="Kode buka dari guru" autocomplete="off" maxlength="20"
+      style="flex:1;min-width:140px;padding:10px 12px;border:1.5px solid var(--line);border-radius:9px;font-size:.9rem;">
+    <button class="btnPrimary gateBtn">Buka</button></div>
+    <div class="gateErr" style="color:var(--red);font-size:.8rem;margin-top:6px;"></div></div>`;
+  const inp=host.querySelector(".gateInput"),err=host.querySelector(".gateErr");
+  const go=()=>{
+    const v=inp.value.trim();
+    if(!v){err.textContent="Masukkan kode dari guru terlebih dahulu.";return;}
+    if(!cekKodeGate(kind,v)){err.textContent="Kode salah. Pastikan kode yang dimasukkan benar dari guru.";return;}
+    progress[kind+"Open"]=true;saveProgress();onOk();
+  };
+  const gbtn=host.querySelector(".gateBtn");
+  gbtn.addEventListener("click",()=>withBusy(gbtn,go));
+  inp.addEventListener("keydown",e=>{if(e.key==="Enter")gbtn.click();});
+}
+function renderEvalGate(){
+  const host=document.getElementById("evalGateBox");if(!host)return;
+  const st=(stageLatihanDone()?"1":"0")+(progress.evalOpen?"1":"0")+USER.kelas;
+  if(host.dataset.st===st)return;   // hindari menghapus ketikan siswa
+  host.dataset.st=st;
+  if(!stageLatihanDone()){host.innerHTML="";return;}
+  renderGateBox(host,"eval","Buka Menu Evaluasi",()=>{
+    host.dataset.st="";renderEvalGate();updateNavLocks();
+    showProtectToast("✅ Kode benar. Menu Evaluasi sekarang sudah muncul.");
+  });
+}
+
+/* ================= KUIS 5 LEVEL x 5 SOAL ================= */
+const KUIS = [
+{title:"Level 1: Pengertian & Ciri Anekdot", q:[
+ {q:"Apa yang dimaksud dengan teks anekdot?",opts:["Cerita fiksi tanpa tujuan tertentu","Cerita singkat yang lucu dan mengandung kritik/sindiran terhadap suatu peristiwa","Teks berisi data statistik","Teks riwayat hidup seseorang secara lengkap","Naskah drama panjang"],ans:1},
+ {q:"Tujuan utama teks anekdot adalah...",opts:["Menghibur sekaligus menyampaikan kritik/sindiran secara halus","Memberikan instruksi langkah demi langkah","Menjelaskan data ilmiah","Mempromosikan produk","Menceritakan sejarah secara kronologis"],ans:0},
+ {q:"Ciri yang membedakan anekdot dengan humor biasa adalah...",opts:["Anekdot selalu panjang","Anekdot mengandung kritik/pesan moral, humor biasa hanya untuk lucu-lucuan","Humor biasa selalu tentang tokoh terkenal","Anekdot tidak boleh lucu","Tidak ada perbedaan"],ans:1},
+ {q:"Tokoh dalam teks anekdot biasanya berupa...",opts:["Hanya tokoh khayalan","Manusia/hewan berperilaku manusia, sering terkait profesi/tokoh tertentu","Hanya robot","Tokoh sejarah kuno saja","Tidak ada tokoh"],ans:1},
+ {q:"Anekdot biasanya bersifat...",opts:["Panjang dan mendetail seperti novel","Singkat, lucu, namun bermakna","Serius tanpa unsur humor","Berupa puisi","Selalu dialog formal"],ans:1}
+]},
+{title:"Level 2: Struktur Teks Anekdot", q:[
+ {q:"Struktur lengkap teks anekdot adalah...",opts:["Orientasi-Komplikasi-Resolusi","Abstraksi-Orientasi-Krisis-Reaksi-Koda","Pembuka-Isi-Penutup","Tesis-Argumentasi-Penegasan Ulang","Pernyataan Umum-Deskripsi Bagian"],ans:1},
+ {q:"Bagian yang memberi gambaran awal isi teks disebut...",opts:["Koda","Reaksi","Krisis","Abstraksi","Orientasi"],ans:3},
+ {q:"Bagian yang memuat kejadian tak terduga pemicu kelucuan disebut...",opts:["Krisis","Abstraksi","Koda","Orientasi","Reaksi"],ans:0},
+ {q:"Bagian penutup berisi simpulan/perubahan sikap tokoh disebut...",opts:["Reaksi","Krisis","Koda","Abstraksi","Orientasi"],ans:2},
+ {q:"Bagian berisi latar waktu, tempat, dan pengenalan tokoh disebut...",opts:["Orientasi","Koda","Krisis","Reaksi","Abstraksi"],ans:0}
+]},
+{title:"Level 3: Kaidah Kebahasaan", q:[
+ {q:"Kalimat retoris adalah kalimat yang...",opts:["Tidak memerlukan jawaban karena jawabannya sudah jelas","Selalu berupa kalimat perintah","Berisi data statistik","Hanya digunakan dalam teks eksposisi","Tidak boleh digunakan dalam anekdot"],ans:0},
+ {q:"Konjungsi \"kemudian\", \"lalu\" termasuk konjungsi...",opts:["Kausalitas","Temporal","Pertentangan","Penambahan","Perbandingan"],ans:1},
+ {q:"\"Coba pikirkan, apakah itu adil?\" merupakan contoh...",opts:["Kalimat retoris","Kalimat langsung","Kalimat majemuk setara","Kalimat pasif","Kalimat berita biasa"],ans:0},
+ {q:"Penggunaan kata kerja aksi dalam anekdot berfungsi untuk...",opts:["Menunjukkan tindakan/peristiwa secara jelas","Memperindah judul","Mengganti tanda baca","Menghindari dialog","Menambah panjang kalimat"],ans:0},
+ {q:"Majas yang sering dipakai untuk menyindir halus dalam anekdot adalah...",opts:["Personifikasi","Ironi/sindiran","Hiperbola tanpa makna kritik","Metafora tanpa tujuan kritik","Repetisi"],ans:1}
+]},
+{title:"Level 4: Analisis Teks (berdasar contoh \"Dosa Ringan\")", q:[
+ {q:"Kalimat \"Suatu siang, seorang mahasiswa bertanya kepada dosennya...\" termasuk struktur...",opts:["Krisis","Orientasi","Koda","Abstraksi","Reaksi"],ans:1},
+ {q:"Kalimat \"Kalau begitu, saya baru saja menambah dosa, Pak.\" menunjukkan bagian...",opts:["Reaksi","Orientasi","Abstraksi","Krisis","Koda"],ans:0},
+ {q:"Kritik sosial tersirat dalam anekdot tersebut adalah...",opts:["Kebiasaan berbohong menutupi kesalahan","Kritik terhadap pendidikan tinggi","Kritik terhadap cuaca","Kritik terhadap dosen yang galak","Tidak ada kritik sosial"],ans:0},
+ {q:"Unsur kelucuan anekdot tersebut muncul dari...",opts:["Jawaban mahasiswa yang tak terduga mengakui kesalahan sendiri","Dosen yang marah-marah","Cerita tentang hujan","Deskripsi ruang kelas","Penjelasan definisi dosa"],ans:0},
+ {q:"Kalimat \"Seisi kelas tertawa, dan sejak saat itu ia selalu datang lebih awal\" adalah struktur...",opts:["Krisis","Koda","Orientasi","Abstraksi","Reaksi"],ans:1}
+]},
+{title:"Level 5: HOTS & Evaluasi Kritis", q:[
+ {q:"Mengapa anekdot efektif sebagai media kritik sosial dibanding kritik langsung?",opts:["Disampaikan santai & lucu sehingga lebih mudah diterima","Tidak mengandung pesan apa pun","Selalu ditujukan pada satu orang tertentu","Tidak perlu berdasarkan fakta","Hanya untuk hiburan semata"],ans:0},
+ {q:"Hal utama saat menulis anekdot dari hasil penelitian sederhana adalah...",opts:["Mengarang bebas tanpa data","Data harus akurat & bersumber valid sebelum dikemas jenaka","Menghindari topik sosial","Bahasa serumit mungkin","Tidak perlu ada tokoh"],ans:1},
+ {q:"Kesantunan penting dalam lawakan tunggal berisi kritik sosial karena...",opts:["Kritik tersampaikan tanpa menyinggung pihak tertentu","Supaya penonton tidak tertawa","Agar materi lebih panjang","Tidak berkaitan dengan etika","Supaya lebih mudah dihafal"],ans:0},
+ {q:"Perbedaan mendasar eksposisi dan anekdot dalam menyampaikan kritik sosial adalah...",opts:["Eksposisi lugas berbasis data, anekdot naratif & jenaka","Keduanya sama persis","Eksposisi selalu lucu","Anekdot tidak boleh berdasarkan fakta","Eksposisi tidak memiliki struktur"],ans:0},
+ {q:"Sikap kritis-reflektif yang tepat saat menyimak anekdot lisan adalah...",opts:["Hanya menikmati kelucuannya","Mengevaluasi pesan & relevansinya dengan realitas sosial","Menolak semua anekdot yang menyindir pemerintah","Menganggap anekdot sebagai fakta mutlak","Mengabaikan konteks penyampaian"],ans:1}
+]}
+];
+
+/* ================= LATIHAN (10 soal) ================= */
+const LATIHAN = [
+{type:"pg", q:"Struktur teks anekdot yang berisi latar belakang peristiwa (waktu, tempat, tokoh) disebut...", opts:["Krisis","Orientasi","Koda","Abstraksi"], ans:1, expl:"Orientasi berisi pengenalan latar dan tokoh sebelum masuk ke bagian krisis."},
+{type:"isian", q:"Sebutkan istilah bagian akhir teks anekdot yang berisi simpulan/perubahan sikap tokoh!", accept:["koda"], expl:"Koda adalah bagian penutup teks anekdot."},
+{type:"pg", q:"Konjungsi \"kemudian\", \"lalu\", \"setelah itu\" termasuk konjungsi...", opts:["Kausalitas","Temporal","Pertentangan","Perbandingan"], ans:1, expl:"Konjungsi yang menunjukkan urutan waktu disebut konjungsi temporal."},
+{type:"isian", q:"Tuliskan istilah untuk kalimat pertanyaan yang tidak memerlukan jawaban karena jawabannya sudah jelas!", accept:["kalimat retoris","retoris"], expl:"Kalimat retoris digunakan untuk menegaskan sindiran."},
+{type:"pg", q:"Anekdot berbeda dengan humor biasa karena anekdot mengandung...", opts:["Rima","Kritik/pesan moral","Pantun","Majas hiperbola semata"], ans:1, expl:"Anekdot selalu memiliki kritik/pesan moral, tidak sekadar lucu."},
+{type:"isian", q:"Sebutkan bagian struktur anekdot yang memuat kejadian tak terduga pemicu kelucuan!", accept:["krisis"], expl:"Krisis adalah puncak masalah/kejadian tak terduga dalam anekdot."},
+{type:"pg", q:"Tokoh dalam anekdot biasanya mewakili...", opts:["Makhluk luar angkasa","Profesi/kalangan tertentu dalam masyarakat","Benda mati saja","Tidak ada tokoh sama sekali"], ans:1, expl:"Tokoh anekdot biasanya profesi/kalangan tertentu agar kritik lebih relevan."},
+{type:"isian", q:"Apa nama bentuk pertunjukan lisan yang menyampaikan kritik sosial secara jenaka oleh satu orang di panggung?", accept:["lawakan tunggal","stand up comedy","stand-up comedy"], expl:"Lawakan tunggal atau stand up comedy dibawakan oleh satu komika."},
+{type:"pg", q:"Sebelum menulis anekdot dari fenomena sosial, penulis sebaiknya melakukan...", opts:["Mengarang bebas","Penelitian/observasi sederhana & mencari sumber valid","Menghindari data","Menyalin teks orang lain"], ans:1, expl:"Data yang akurat menjadi dasar agar kritik dalam anekdot dapat dipertanggungjawabkan."},
+{type:"isian", q:"Sebutkan satu sikap penting yang harus diperhatikan saat menyampaikan kritik sosial lewat lawakan tunggal!", accept:["kesantunan","santun"], expl:"Kesantunan menjaga agar kritik tersampaikan tanpa menyinggung pihak tertentu."}
+];
+
+/* ================= EVALUASI (10 soal, 5 tipe AKM) ================= */
+const EVALUASI = [
+{type:"pg", instr:"Pilihlah satu jawaban yang paling tepat!", q:"Bagian teks anekdot yang berfungsi sebagai gambaran awal isi teks (bersifat opsional) disebut...", opts:["Koda","Orientasi","Abstraksi","Krisis"], ans:2, w:10},
+{type:"pg", instr:"Pilihlah satu jawaban yang paling tepat!", q:"Gaya bahasa yang digunakan untuk menyindir secara halus dalam teks anekdot disebut majas...", opts:["Personifikasi","Ironi","Metafora","Hiperbola"], ans:1, w:10},
+{type:"pgk", instr:"Berilah tanda centang pada SEMUA pernyataan yang BENAR mengenai struktur teks anekdot (jawaban benar lebih dari satu)!", q:"Pernyataan mengenai struktur teks anekdot:", opts:["Abstraksi berisi gambaran awal isi teks","Krisis memuat kejadian tak terduga pemicu kelucuan","Koda selalu berada di awal teks","Reaksi merupakan tanggapan tokoh terhadap krisis","Orientasi tidak berkaitan dengan latar peristiwa"], ans:[0,1,3], w:10},
+{type:"pgk", instr:"Berilah tanda centang pada SEMUA pernyataan yang BENAR mengenai ciri-ciri teks anekdot (jawaban benar lebih dari satu)!", q:"Pernyataan mengenai ciri-ciri teks anekdot:", opts:["Bersifat lucu/menggelitik","Mengandung kritik atau sindiran","Selalu berupa cerita panjang seperti novel","Melibatkan tokoh yang relevan dengan kritik yang disampaikan","Tidak memiliki pesan moral"], ans:[0,1,3], w:10},
+{type:"isian", instr:"Isilah titik-titik dengan jawaban singkat dan tepat!", q:"Bagian teks anekdot yang berisi latar belakang, waktu, tempat, dan pengenalan tokoh disebut ____.", accept:["orientasi"], w:10},
+{type:"isian", instr:"Isilah titik-titik dengan jawaban singkat dan tepat!", q:"Kalimat pertanyaan yang tidak memerlukan jawaban karena sudah jelas jawabannya disebut kalimat ____.", accept:["retoris","kalimat retoris"], w:10},
+{type:"bs", instr:"Tentukan pernyataan berikut BENAR atau SALAH sesuai konsep teks anekdot!", q:"Pernyataan tentang teks anekdot:", statements:[
+   {s:"Anekdot selalu mengandung unsur humor sekaligus kritik sosial.", ans:true},
+   {s:"Struktur anekdot yang wajib ada hanyalah Orientasi dan Koda, sedangkan Krisis boleh dihilangkan.", ans:false},
+   {s:"Tokoh anekdot dapat berupa manusia maupun hewan yang berperilaku seperti manusia.", ans:true},
+   {s:"Kalimat retoris dalam anekdot berfungsi menegaskan sindiran tanpa memerlukan jawaban.", ans:true}
+ ], w:10},
+{type:"bs", instr:"Tentukan pernyataan berikut BENAR atau SALAH sesuai konsep teks eksposisi & lawakan tunggal!", q:"Pernyataan tentang teks eksposisi dan lawakan tunggal:", statements:[
+   {s:"Teks eksposisi hasil penelitian sederhana dapat menjadi dasar penulisan teks anekdot yang akurat.", ans:true},
+   {s:"Lawakan tunggal boleh menyampaikan kritik dengan kata-kata kasar asal lucu.", ans:false},
+   {s:"Struktur teks eksposisi terdiri atas tesis, argumentasi, dan penegasan ulang.", ans:true},
+   {s:"Materi lawakan tunggal tidak perlu berdasarkan fenomena nyata.", ans:false}
+ ], w:10},
+{type:"jodoh", instr:"Jodohkanlah istilah struktur pada kolom A dengan penjelasan yang tepat pada kolom B!", q:"Struktur Teks Anekdot", left:["Abstraksi","Orientasi","Krisis","Reaksi","Koda"],
+ right:["Gambaran awal isi teks","Latar waktu, tempat, dan pengenalan tokoh","Kejadian tak terduga pemicu kelucuan","Tanggapan tokoh terhadap krisis","Simpulan/perubahan sikap tokoh"], ans:[0,1,2,3,4], w:10},
+{type:"jodoh", instr:"Jodohkanlah unsur kebahasaan pada kolom A dengan contoh/penjelasan yang tepat pada kolom B!", q:"Kaidah Kebahasaan Anekdot", left:["Kalimat retoris","Konjungsi temporal","Kata kerja aksi","Majas ironi"],
+ right:["Pertanyaan yang tak perlu dijawab karena sudah jelas","Kata penghubung penunjuk urutan waktu (lalu, kemudian)","Kata yang menunjukkan tindakan tokoh secara jelas","Gaya bahasa untuk menyindir secara halus"], ans:[0,1,2,3], w:10}
+];
+
+/* ================= STATE ================= */
+let USER = {nama:"", kelas:""};
+function loadState(){try{const s=JSON.parse(localStorage.getItem("anekdot_user")||"null");if(s)USER=s;}catch(e){}}
+function saveState(){try{localStorage.setItem("anekdot_user",JSON.stringify(USER));}catch(e){}}
+function todayStr(d){d=d||new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");}
+function userSlug(){return ((USER.nama||"guest")+"_"+(USER.kelas||"x")).replace(/[^A-Za-z0-9]+/g,"_").toUpperCase();}
+
+/* ================= JENDELA AKSES (05.00 - 20.00 WIB) & KUOTA MAKS 3x AKSES/HARI ================= */
+const OPEN_HOUR=5, CLOSE_HOUR=20, MAX_ACCESS_PER_DAY=3;
+function getAccessRecord(){
+  try{
+    const r=JSON.parse(localStorage.getItem("anekdot_access")||"null");
+    if(r&&r.date===todayStr())return r;
+  }catch(e){}
+  return {date:todayStr(),count:0};
+}
+function saveAccessRecord(r){try{localStorage.setItem("anekdot_access",JSON.stringify(r));}catch(e){}}
+function useAccessQuota(){
+  const r=getAccessRecord();
+  r.count+=1;
+  saveAccessRecord(r);
+  return r.count;
+}
+function sisaAkses(){return Math.max(0,MAX_ACCESS_PER_DAY-getAccessRecord().count);}
+function checkAccess(){
+  return {ok:true}; /* MODE PREVIEW PEMILIK */
+  const now=new Date();
+  const hour=now.getHours();
+  if(hour<OPEN_HOUR||hour>=CLOSE_HOUR){
+    return {ok:false,msg:"Waktu belajar hari ini sudah selesai atau belum dimulai. Media pembelajaran hanya dapat diakses pukul 05.00–20.00 WIB."};
+  }
+  if(getAccessRecord().count>=MAX_ACCESS_PER_DAY){
+    return {ok:false,msg:"Kamu sudah mencapai batas maksimal "+MAX_ACCESS_PER_DAY+" kali akses hari ini (pukul 05.00–20.00 WIB). Silakan masuk kembali besok mulai pukul 05.00."};
+  }
+  return {ok:true};
+}
+function applyAccessGate(){
+  const access=checkAccess();
+  const lockEl=document.getElementById("lockScreen");
+  const loginEl=document.getElementById("loginScreen");
+  const appEl=document.getElementById("app");
+  if(!access.ok){
+    document.getElementById("lockMsg").textContent=access.msg;
+    lockEl.style.display="flex";loginEl.style.display="none";appEl.style.display="none";
+    return false;
+  }
+  lockEl.style.display="none";
+  return true;
+}
+setInterval(()=>{
+  return; /* MODE PREVIEW PEMILIK */
+  const hour=new Date().getHours();
+  const appVisible=document.getElementById("app").style.display!=="none";
+  if((hour<OPEN_HOUR||hour>=CLOSE_HOUR)&&appVisible){
+    USER={nama:"",kelas:""};saveState();
+    applyAccessGate();
+  }else if(hour<OPEN_HOUR||hour>=CLOSE_HOUR){
+    applyAccessGate();
+  }
+},30000);
+
+/* ================= LOGIN LOGIC ================= */
+let kuisInProgress=false, evalInProgress=false;
+const fNama=document.getElementById("fNama");
+fNama.addEventListener("input",e=>{e.target.value=e.target.value.toUpperCase();});
+document.getElementById("togglePw").addEventListener("click",()=>{
+  const p=document.getElementById("fPass");
+  p.type=p.type==="password"?"text":"password";
+});
+/* Password login berbeda untuk tiap kelas */
+const KELAS_PASSWORD={
+  "X-1":"bacalah01",
+  "X-2":"simaklah2",
+  "X-3":"Dengarlahx3",
+  "X-4":"tulislah44",
+  "X-5":"Belajar05",
+  "X-6":"presentasikan67"
+};
+document.getElementById("loginForm").addEventListener("submit",e=>{
+  e.preventDefault();
+  if(!applyAccessGate())return;
+  const nama=fNama.value.trim();
+  const kelas=document.getElementById("fKelas").value;
+  const pass=document.getElementById("fPass").value;
+  const err=document.getElementById("loginErr");
+  if(!nama||!kelas){err.textContent="Lengkapi nama dan kelas terlebih dahulu.";return;}
+  if(pass!==KELAS_PASSWORD[kelas]){err.textContent="Password salah untuk kelas "+kelas+". Silakan coba lagi.";return;}
+  err.textContent="";
+  USER={nama,kelas};saveState();
+  const usedCount=useAccessQuota();
+  enterApp();
+  const badge=document.getElementById("ubAkses");
+  if(badge)badge.textContent="Akses ke-"+usedCount+"/"+MAX_ACCESS_PER_DAY+" hari ini";
+});
+function enterApp(){
+  document.getElementById("lockScreen").style.display="none";
+  document.getElementById("loginScreen").style.display="none";
+  document.getElementById("app").style.display="flex";
+  document.getElementById("ubNama").textContent=USER.nama;
+  document.getElementById("ubKelas").textContent=USER.kelas;
+  const badge=document.getElementById("ubAkses");
+  if(badge)badge.textContent="Akses ke-"+getAccessRecord().count+"/"+MAX_ACCESS_PER_DAY+" hari ini";
+  buildWatermark();
+  loadKuisScores();
+  if(typeof renderKuisHome==="function")renderKuisHome();
+  if(typeof updateEvalIntro==="function"){updateEvalIntro();renderEval();}
+  // muat ulang progres tahapan milik siswa ini (nama+kelas), lalu render ulang semua gate
+  if(typeof loadMateriRead==="function"){
+    loadMateriRead();loadProgress();loadLatihanChecked();
+    curMateriIdx=0;renderSubtabs();showMateri(0);
+    renderRingkasanPage();renderProyekPage();
+    updateLatihanProgressLabel();
+    navState={};updateNavLocks();
+  }
+  setTimeout(()=>showProtectToast("🔒 Konten ini dilindungi. Dilarang menyalin, memfoto, atau mengambil tangkapan layar tanpa izin guru mapel."),600);
+  goPage("beranda");
+  syncHeaderHeight();setTimeout(syncHeaderHeight,300);
+}
+document.getElementById("logoutBtn").addEventListener("click",()=>{
+  openLogoutModal();
+});
+function openLogoutModal(){
+  const overlay=document.createElement("div");
+  overlay.id="logoutModalOverlay";
+  overlay.style.cssText="position:fixed;inset:0;background:rgba(11,37,69,.55);z-index:100;display:flex;align-items:center;justify-content:center;padding:20px;";
+  const sisa=sisaAkses();
+  const warnBelum=(kuisInProgress||evalInProgress)
+    ?`<p style="font-size:.82rem;color:var(--red);font-weight:700;background:#FCEFEF;border-radius:8px;padding:8px 10px;">⚠️ Kamu masih mengerjakan ${kuisInProgress?"Kuis":""}${kuisInProgress&&evalInProgress?" & ":""}${evalInProgress?"Evaluasi":""} dan belum menekan tombol Selesai. Jika keluar sekarang, jawaban pada tahap ini akan <b>hilang</b> dan harus diulang dari awal.</p>`
+    :"";
+  overlay.innerHTML=`<div style="background:#fff;border-radius:14px;max-width:360px;width:100%;padding:22px 20px;text-align:center;box-shadow:0 20px 50px rgba(0,0,0,.3);">
+    <h3 style="margin-top:0;">Keluar dari Pembelajaran?</h3>
+    ${warnBelum}
+    <p style="font-size:.85rem;color:var(--muted);">Kamu boleh masuk maksimal <b>${MAX_ACCESS_PER_DAY}x sehari</b> (pukul 05.00–20.00 WIB). Sisa kesempatan masuk setelah ini: <b>${sisa>0?sisa-1<0?0:sisa-1:0}x</b>. Jika kuota habis, kamu baru bisa masuk lagi besok pukul 05.00.</p>
+    <div class="btnRow" style="justify-content:center;margin-top:16px;">
+      <button class="btnGhost" id="cancelLogout">Batal</button>
+      <button class="btnPrimary" id="confirmLogout" style="background:var(--red);">Ya, Keluar</button>
+    </div></div>`;
+  document.body.appendChild(overlay);
+  document.getElementById("cancelLogout").addEventListener("click",()=>overlay.remove());
+  overlay.addEventListener("click",e=>{if(e.target===overlay)overlay.remove();});
+  document.getElementById("confirmLogout").addEventListener("click",()=>{
+    overlay.remove();
+    kuisInProgress=false;evalInProgress=false;
+    USER={nama:"",kelas:""};try{localStorage.removeItem("anekdot_user");}catch(e){}
+    document.getElementById("app").style.display="none";
+    document.getElementById("loginForm").reset();
+    applyAccessGate();
+  });
+}
+
+/* ================= PROTEKSI KONTEN (anti-salin, watermark, deteksi blur) ================= */
+function buildWatermark(){
+  const layer=document.getElementById("watermarkLayer");
+  const label=(USER.nama||"SMAN 1 PRONOJIWO")+" • "+(USER.kelas||"")+" • "+todayStr();
+  let html="";
+  for(let i=0;i<80;i++)html+=`<span>${label}</span>`;
+  layer.innerHTML=html;
+}
+function showProtectToast(msg){
+  const t=document.getElementById("protectToast");
+  t.textContent=msg;t.classList.add("show");
+  clearTimeout(window._toastT);
+  window._toastT=setTimeout(()=>t.classList.remove("show"),3500);
+}
+function isTypingField(el){return el&&(el.tagName==="INPUT"||el.tagName==="TEXTAREA"||el.tagName==="SELECT");}
+document.addEventListener("contextmenu",e=>{if(!isTypingField(e.target))e.preventDefault();});
+document.addEventListener("copy",e=>{if(!isTypingField(e.target)){e.preventDefault();showProtectToast("⚠️ Menyalin konten tidak diizinkan pada media pembelajaran ini.");}});
+document.addEventListener("cut",e=>{if(!isTypingField(e.target))e.preventDefault();});
+document.addEventListener("selectstart",e=>{if(!isTypingField(e.target))e.preventDefault();});
+document.addEventListener("dragstart",e=>e.preventDefault());
+document.addEventListener("keydown",e=>{
+  const k=e.key?e.key.toLowerCase():"";
+  const blockCombo=(e.ctrlKey||e.metaKey)&&["c","u","s","p"].includes(k)&&!isTypingField(e.target);
+  const blockDevtools=e.key==="F12"||((e.ctrlKey||e.metaKey)&&e.shiftKey&&["i","j","c"].includes(k));
+  if(blockCombo||blockDevtools){
+    e.preventDefault();
+    showProtectToast("⚠️ Aksi ini dinonaktifkan untuk melindungi konten pembelajaran.");
+  }
+});
+document.addEventListener("visibilitychange",()=>{
+  const appVisible=document.getElementById("app").style.display!=="none";
+  document.getElementById("privacyBlur").style.display=(document.hidden&&appVisible)?"flex":"none";
+});
+/* Layar penutup privasi. Sebelumnya bisa "nyangkut" (event focus tidak selalu datang,
+   terutama di HP/WebView/iframe) sehingga semua tombol tak bisa ditekan.
+   Perbaikan: (1) di layar sentuh tidak dipicu oleh blur biasa (cukup visibilitychange),
+   (2) hilang otomatis saat disentuh/diklik/digerakkan/ditekan tombol, saat fokus kembali,
+   atau setelah 2 detik bila halaman sedang terlihat. */
+const IS_TOUCH=("ontouchstart" in window)||(window.matchMedia&&window.matchMedia("(pointer:coarse)").matches);
+function hidePrivacyBlur(){document.getElementById("privacyBlur").style.display="none";}
+window.addEventListener("blur",()=>{
+  if(IS_TOUCH)return;
+  const appVisible=document.getElementById("app").style.display!=="none";
+  if(appVisible){
+    document.getElementById("privacyBlur").style.display="flex";
+    setTimeout(()=>{if(!document.hidden)hidePrivacyBlur();},2000);
+  }
+});
+window.addEventListener("focus",hidePrivacyBlur);
+window.addEventListener("pageshow",hidePrivacyBlur);
+["pointerdown","touchstart","mousedown","mousemove","keydown","click"].forEach(ev=>
+  document.addEventListener(ev,()=>{if(!document.hidden)hidePrivacyBlur();},true));
+
+/* Tinggi header bisa >60px (layar sempit/notch); sesuaikan agar menu tidak tertutup header */
+function syncHeaderHeight(){
+  const h=document.querySelector("header.topbar");
+  if(h&&h.offsetHeight)document.documentElement.style.setProperty("--hdrH",h.offsetHeight+"px");
+}
+window.addEventListener("resize",syncHeaderHeight);
+window.addEventListener("orientationchange",syncHeaderHeight);
+/* ================= NAV ================= */
+document.querySelectorAll("nav.mainnav button").forEach(b=>{
+  b.addEventListener("click",()=>{
+    const p=b.dataset.page;
+    if(typeof pageUnlocked==="function"&&!pageUnlocked(p)){
+      showProtectToast("🔒 "+(PAGE_REQUIREMENT[p]?PAGE_REQUIREMENT[p].msg:"Selesaikan tahapan sebelumnya terlebih dahulu."));
+      return;
+    }
+    goPage(p);document.getElementById("mainnav").classList.remove("open");
+  });
+});
+document.getElementById("menuToggle").addEventListener("click",()=>{
+  document.getElementById("mainnav").classList.toggle("open");
+});
+function goPage(p){
+  document.querySelectorAll(".page").forEach(s=>s.classList.remove("active"));
+  document.getElementById("page-"+p).classList.add("active");
+  document.querySelectorAll("nav.mainnav button").forEach(b=>b.classList.toggle("active",b.dataset.page===p));
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
+/* ================= PROTEKSI TAHAPAN (SEMUA MENU BERURUTAN) =================
+   Aturan: setiap menu utama baru terbuka setelah tahap sebelumnya benar-benar
+   dituntaskan (materi dibaca penuh, ringkasan & proyek ditandai selesai,
+   kuis tuntas sampai level terakhir, latihan dicek semua). Semua status
+   disimpan per-siswa (nama+kelas) di localStorage perangkat siswa, sehingga
+   TIDAK mengubah/menyentuh link/tautan yang sudah dibagikan ke siswa. */
+const KUIS_PASS=3; // skor minimal dari 5 untuk tuntas & membuka level/tahap berikutnya
+
+let materiRead=[];         // status baca penuh tiap sub-materi (array boolean per index)
+let progress={};           // status tahapan: {ringkasanDone, proyekOk:[bool per proyek], kuisOpen, evalOpen}
+let latihanChecked=[];     // index soal Latihan yang sudah ditekan "Cek Jawaban"
+
+function loadMateriRead(){try{materiRead=JSON.parse(localStorage.getItem("anekdot_materiread_"+userSlug())||"[]");}catch(e){materiRead=[];}}
+function saveMateriRead(){try{localStorage.setItem("anekdot_materiread_"+userSlug(),JSON.stringify(materiRead));}catch(e){}}
+function loadProgress(){try{progress=JSON.parse(localStorage.getItem("anekdot_progress_"+userSlug())||"{}");}catch(e){progress={};}}
+function saveProgress(){try{localStorage.setItem("anekdot_progress_"+userSlug(),JSON.stringify(progress));}catch(e){}}
+function loadLatihanChecked(){try{latihanChecked=JSON.parse(localStorage.getItem("anekdot_latihanchecked_"+userSlug())||"[]");}catch(e){latihanChecked=[];}}
+function saveLatihanChecked(){try{localStorage.setItem("anekdot_latihanchecked_"+userSlug(),JSON.stringify(latihanChecked));}catch(e){}}
+
+function materiUnlocked(i){return i===0||!!materiRead[i-1];}
+function stageMateriDone(){return MATERI.every((m,i)=>!!materiRead[i]);}
+function stageRingkasanDone(){return !!progress.ringkasanDone;}
+function proyekOkCount(){return PROYEK.filter((p,i)=>progress.proyekOk&&progress.proyekOk[i]).length;}
+function stageProyekDone(){return proyekOkCount()>=PROYEK.length;}
+function stageKuisDone(){return kuisScores[KUIS.length-1]!==undefined&&kuisScores[KUIS.length-1]>=KUIS_PASS;}
+function stageLatihanDone(){return latihanChecked.length>=LATIHAN.length;}
+
+const PAGE_REQUIREMENT={
+  ringkasan:{unlocked:stageMateriDone,msg:"Selesaikan membaca seluruh sub-materi (1–"+MATERI.length+") di menu 📖 Materi Lengkap terlebih dahulu — tekan tombol di akhir tiap materi."},
+  proyek:{unlocked:stageRingkasanDone,msg:"Baca 📝 Ringkasan sampai akhir lalu tekan tombol \"Sudah Membaca Ringkasan\" terlebih dahulu."},
+  kuis:{unlocked:()=>stageProyekDone()&&!!progress.kuisOpen,msg:"Kumpulkan seluruh 🎬 Tugas Proyek ke guru, lalu masukkan kode buka Kuis dari guru terlebih dahulu."},
+  latihan:{unlocked:stageKuisDone,msg:"Tuntaskan 🎯 Kuis Bertingkat sampai Level "+KUIS.length+" (skor minimal "+KUIS_PASS+"/5) terlebih dahulu."},
+  evaluasi:{unlocked:()=>stageLatihanDone()&&!!progress.evalOpen,msg:"Cek jawaban seluruh "+LATIHAN.length+" soal ✏️ Latihan Soal, lalu masukkan kode buka Evaluasi dari guru terlebih dahulu."}
+};
+function pageUnlocked(p){
+  if(p==="beranda"||p==="materi"||p==="rekap")return true;
+  const r=PAGE_REQUIREMENT[p];
+  return r?r.unlocked():true;
+}
+let navState={}; // status terbuka/tidaknya tiap menu (untuk notifikasi saat menu baru muncul)
+const NAV_LABEL={ringkasan:"Ringkasan",proyek:"Tugas Proyek",kuis:"Kuis Bertingkat",latihan:"Latihan Soal",evaluasi:"Evaluasi"};
+function updateNavLocks(){
+  document.querySelectorAll("nav.mainnav button").forEach(b=>{
+    const p=b.dataset.page;
+    const ok=pageUnlocked(p);
+    b.style.display=ok?"":"none";   // menu yang belum boleh dibuka disembunyikan total
+    if(ok&&navState[p]===false&&NAV_LABEL[p])showProtectToast("🔓 Menu "+NAV_LABEL[p]+" sekarang sudah muncul di navigasi.");
+    navState[p]=ok;
+  });
+}
+/* Helper: jalankan cb() sekali saat elemen `el` mulai terlihat di layar
+   (siswa sudah menggulir sampai sana). Pakai IntersectionObserver bila
+   tersedia; kalau tidak (browser/WebView lama), pakai fallback berbasis
+   event scroll agar tombol tetap bisa aktif dan halaman tidak macet. */
+function watchGateVisible(el,cb){
+  if(typeof IntersectionObserver==="function"){
+    const obs=new IntersectionObserver(entries=>{
+      entries.forEach(en=>{if(en.isIntersecting){cb();obs.disconnect();}});
+    },{threshold:.3});
+    obs.observe(el);
+    return;
+  }
+  function check(){
+    const r=el.getBoundingClientRect();
+    const vh=window.innerHeight||document.documentElement.clientHeight;
+    if(r.top<vh&&r.bottom>0){
+      cb();
+      window.removeEventListener("scroll",check);
+      window.removeEventListener("resize",check);
+    }
+  }
+  window.addEventListener("scroll",check,{passive:true});
+  window.addEventListener("resize",check);
+  check();
+}
+
+/* Kotak "gate" generik: tombol baru aktif setelah elemen ini terlihat penuh
+   di layar (artinya siswa sudah menggulir sampai bagian akhir konten). */
+function attachStageGate(containerEl,opts){
+  const gate=document.createElement("div");
+  gate.className="stageGate";
+  if(opts.isDone()){
+    gate.innerHTML=`<p class="doneMsg">✅ Tahap ini sudah kamu tandai selesai.</p>`;
+    containerEl.appendChild(gate);
+    return;
+  }
+  gate.innerHTML=`<p>👇 Gulir sampai kotak ini terlihat penuh untuk mengaktifkan tombol di bawah.</p>
+    <button class="btnPrimary" disabled>${opts.label}</button>`;
+  containerEl.appendChild(gate);
+  const btn=gate.querySelector("button");
+  watchGateVisible(gate,()=>{btn.disabled=false;});
+  btn.addEventListener("click",()=>{
+    opts.onConfirm();
+    gate.innerHTML=`<p class="doneMsg">✅ Tahap ini sudah kamu tandai selesai.</p>`;
+    updateNavLocks();
+    showProtectToast(opts.toast||"✅ Berhasil ditandai selesai.");
+  });
+}
+
+/* ================= RENDER: BERANDA ================= */
+document.getElementById("tpListEl").innerHTML=TP.map((t,i)=>`<li><span class="tpNum">${i+1}</span><span>${t}</span></li>`).join("");
+
+/* ================= RENDER: MATERI (berurutan, wajib dibaca penuh) ================= */
+const subtabsEl=document.getElementById("subtabsEl");
+const matContent=document.getElementById("matContent");
+let curMateriIdx=0;
+function renderSubtabs(){
+  subtabsEl.innerHTML=MATERI.map((m,i)=>{
+    const locked=!materiUnlocked(i);
+    const mark=materiRead[i]?" ✅":(locked?" 🔒":"");
+    return `<button data-i="${i}" class="${i===curMateriIdx?'active':''} ${locked?'locked':''}" ${locked?"disabled":""}>
+      <span class="n">${i+1}.</span>${m.t}${mark}</button>`;
+  }).join("");
+}
+function showMateri(i){
+  if(!materiUnlocked(i)){
+    showProtectToast("🔒 Selesaikan membaca Materi "+i+" sampai tuntas terlebih dahulu sebelum membuka Materi "+(i+1)+".");
+    return;
+  }
+  curMateriIdx=i;
+  const isLast=i===MATERI.length-1;
+  const already=!!materiRead[i];
+  const gateHtml=already
+    ?`<div class="stageGate"><p class="doneMsg">✅ Materi ini sudah kamu tandai selesai dibaca.</p></div>`
+    :`<div class="stageGate" id="matGate"><p>👇 Gulir sampai kotak ini terlihat penuh untuk mengaktifkan tombol di bawah.</p>
+       <button class="btnPrimary" id="matNextBtn" disabled>${isLast?"✅ Tandai Selesai Membaca Semua Materi":"✅ Tandai Selesai & Lanjut ke Materi Berikutnya ▶"}</button></div>`;
+  matContent.innerHTML=`<h3>${i+1}. ${MATERI[i].t}</h3>${MATERI[i].html}${gateHtml}`;
+  renderSubtabs();
+  if(!already){
+    const gate=document.getElementById("matGate");
+    const btn=document.getElementById("matNextBtn");
+    watchGateVisible(gate,()=>{btn.disabled=false;});
+    btn.addEventListener("click",()=>{
+      materiRead[i]=true;saveMateriRead();
+      updateNavLocks();
+      if(isLast){
+        showProtectToast("🎉 Semua materi selesai dibaca! Menu Ringkasan sudah muncul.");
+        showMateri(i);
+      }else{
+        showProtectToast("✅ Materi "+(i+1)+" ditandai selesai. Materi "+(i+2)+" terbuka.");
+        showMateri(i+1);
+      }
+    });
+  }
+}
+subtabsEl.addEventListener("click",e=>{const b=e.target.closest("button");if(b&&!b.disabled)showMateri(+b.dataset.i);});
+loadMateriRead();
+renderSubtabs();
+showMateri(0);
+
+/* ================= RENDER: RINGKASAN ================= */
+const ringkasanContentEl=document.getElementById("ringkasanContent");
+function renderRingkasanPage(){
+  ringkasanContentEl.innerHTML=RINGKASAN_HTML;
+  attachStageGate(ringkasanContentEl,{
+    isDone:stageRingkasanDone,
+    label:"✅ Sudah Membaca Ringkasan Sampai Selesai",
+    onConfirm:()=>{progress.ringkasanDone=true;saveProgress();},
+    toast:"✅ Ringkasan ditandai selesai. Menu Tugas Proyek sudah muncul."
+  });
+}
+renderRingkasanPage();
+
+/* ================= RENDER: PROYEK ================= */
+const proyekContentEl=document.getElementById("proyekContent");
+function renderProyekPage(){
+  const okN=proyekOkCount();
+  const cards=PROYEK.map((p,i)=>{
+    const ok=!!(progress.proyekOk&&progress.proyekOk[i]);
+    const check=ok
+      ?`<div class="proyekCheck done"><p class="pcStatus">✅ Proyek ${i+1} sudah dikumpulkan &amp; diverifikasi guru.</p></div>`
+      :`<div class="proyekCheck">
+          <p class="pcStatus">⬜ Belum terverifikasi. Kumpulkan hasil proyek ke guru, lalu masukkan <b>kode verifikasi</b> yang diberikan guru.</p>
+          <div class="pcRow"><input type="text" id="pkInput${i}" placeholder="Kode dari guru" autocomplete="off" maxlength="20">
+          <button class="btnPrimary pkBtn" data-i="${i}">Verifikasi</button></div>
+          <div class="pcErr" id="pkErr${i}"></div>
+        </div>`;
+    return `
+ <div class="card proyekCard">
+   <h3>${ok?"✅ ":"⬜ "}${p.judul}</h3>
+   <div class="proyekMeta">${p.tag.map(t=>`<span class="tag">${t}</span>`).join("")}</div>
+   <p>${p.desc}</p>
+   <h4 style="font-size:.85rem;color:var(--navy);margin-bottom:6px;">Langkah Kerja:</h4>
+   <ol style="font-size:.85rem;">${p.langkah.map(l=>`<li>${l}</li>`).join("")}</ol>
+   <h4 style="font-size:.85rem;color:var(--navy);margin-bottom:6px;">Kriteria Penilaian:</h4>
+   <ul style="font-size:.85rem;">${p.rubrik.map(r=>`<li>${r}</li>`).join("")}</ul>
+   ${check}
+ </div>`;
+  }).join("");
+  proyekContentEl.innerHTML=`<div class="card"><p style="margin:0;font-size:.88rem;"><b>Progres Tugas Proyek: ${okN}/${PROYEK.length} terverifikasi.</b>
+    ${okN<PROYEK.length?"Kode buka Kuis Bertingkat baru bisa dimasukkan setelah ketiga proyek terverifikasi guru.":(progress.kuisOpen?"🎉 Semua proyek selesai — menu Kuis Bertingkat sudah muncul.":"🎉 Semua proyek terverifikasi! Masukkan kode buka Kuis dari guru di bawah ini.")}</p></div>`
+    +(okN>=PROYEK.length?'<div id="gateKuisBox"></div>':"")+cards;
+  if(okN>=PROYEK.length){
+    renderGateBox(document.getElementById("gateKuisBox"),"kuis","Buka Menu Kuis Bertingkat",()=>{
+      renderProyekPage();updateNavLocks();
+      showProtectToast("✅ Kode benar. Menu Kuis Bertingkat sekarang sudah muncul.");
+    });
+  }
+  proyekContentEl.querySelectorAll(".pkBtn").forEach(btn=>btn.addEventListener("click",()=>withBusy(btn,()=>{
+    const i=+btn.dataset.i;
+    const inp=document.getElementById("pkInput"+i);
+    const err=document.getElementById("pkErr"+i);
+    const val=inp.value.trim().toLowerCase();
+    if(!val){err.textContent="Masukkan kode dari guru terlebih dahulu.";return;}
+    const hs=PROYEK_KODE_HASH[USER.kelas];
+    if(!hs||hashKode(val,USER.kelas+"#"+i)!==hs[i]){err.textContent="Kode salah. Pastikan proyek sudah dikumpulkan dan kode benar dari guru.";return;}
+    if(!progress.proyekOk)progress.proyekOk=[];
+    progress.proyekOk[i]=true;saveProgress();
+    renderProyekPage();
+    updateNavLocks();
+    showProtectToast("✅ Proyek "+(i+1)+" terverifikasi guru ("+proyekOkCount()+"/"+PROYEK.length+").");
+  })));
+}
+renderProyekPage();
+
+/* ================= KUIS LOGIC (berjenjang, level berikutnya terkunci) ================= */
+const kuisHome=document.getElementById("kuisHome");
+const kuisRunner=document.getElementById("kuisRunner");
+let kuisScores={};
+function loadKuisScores(){try{kuisScores=JSON.parse(localStorage.getItem("anekdot_kuis_"+userSlug())||"{}");}catch(e){kuisScores={};}}
+function saveKuisScores(){try{localStorage.setItem("anekdot_kuis_"+userSlug(),JSON.stringify(kuisScores));}catch(e){}}
+function levelUnlocked(i){return i===0?true:(kuisScores[i-1]!==undefined&&kuisScores[i-1]>=KUIS_PASS);}
+function renderKuisHome(){
+  kuisRunner.innerHTML="";
+  kuisHome.innerHTML=`<h3>Pilih Level</h3>
+    <p style="font-size:.8rem;color:var(--muted);margin-top:0;">Level berikutnya terbuka setelah level sebelumnya tuntas dengan skor minimal ${KUIS_PASS}/5.</p>
+    <div class="levelGrid">${KUIS.map((k,i)=>{
+      const unlocked=levelUnlocked(i);
+      const score=kuisScores[i];
+      const tuntas=score!==undefined&&score>=KUIS_PASS;
+      return `<button class="levelBtn" data-lv="${i}" ${unlocked?"":"disabled"} style="${unlocked?"":"opacity:.5;cursor:not-allowed;"}">
+      <div class="lv">${unlocked?"":"🔒 "}Level ${i+1}</div>
+      <div class="ln">${k.title.split(": ")[1]}</div>
+      <div class="score">${!unlocked?"Selesaikan level sebelumnya dulu":(score!==undefined?"Skor: "+score+"/5 "+(tuntas?"✓ Tuntas":"(belum tuntas)"):"Belum dikerjakan")}</div>
+    </button>`;}).join("")}</div>`;
+  kuisHome.querySelectorAll(".levelBtn:not([disabled])").forEach(b=>b.addEventListener("click",()=>runKuis(+b.dataset.lv)));
+}
+function runKuis(lv){
+  if(!levelUnlocked(lv)){renderKuisHome();return;}
+  const level=KUIS[lv];let answers=new Array(level.q.length).fill(null);
+  kuisInProgress=true;
+  function render(){
+    kuisRunner.innerHTML=`<div class="card"><h3>${level.title}</h3>
+      <div class="instrBox">⚠️ Jangan tekan tombol Keluar sebelum menekan "Selesai & Lihat Skor" — jawaban yang belum disubmit akan hilang.</div>
+      <div id="kQs"></div>
+      <div class="btnRow"><button class="btnPrimary" id="kSubmit">Selesai & Lihat Skor</button>
+      <button class="btnGhost" id="kBack">← Kembali ke Daftar Level</button></div></div>`;
+    const kQs=document.getElementById("kQs");
+    kQs.innerHTML=level.q.map((item,qi)=>`<div class="qBlock"><div class="qNum">Soal ${qi+1} dari ${level.q.length}</div>
+      ${item.opts.map((o,oi)=>`<label class="opt"><input type="radio" name="k${qi}" value="${oi}"> ${o}</label>`).join("")}</div>`).join("");
+    kQs.querySelectorAll("input").forEach(inp=>inp.addEventListener("change",e=>{answers[+e.target.name.slice(1)]=+e.target.value;}));
+    document.getElementById("kBack").addEventListener("click",()=>{kuisInProgress=false;renderKuisHome();});
+    document.getElementById("kSubmit").addEventListener("click",()=>{
+      kuisInProgress=false;
+      let score=0;
+      level.q.forEach((item,qi)=>{if(answers[qi]===item.ans)score++;});
+      kuisScores[lv]=score;saveKuisScores();updateNavLocks();
+      const tuntas=score>=KUIS_PASS;
+      const pred=score>=4?"Sangat Baik":score>=3?"Baik":score>=2?"Cukup":"Perlu Belajar Lagi";
+      kuisRunner.innerHTML=`<div class="card"><div class="resultBox">
+        <div style="font-size:.8rem;color:var(--muted);">${level.title}</div>
+        <div class="num">${score}/${level.q.length}</div><div class="pred">${pred}</div>
+        ${tuntas?`<p style="color:var(--green);font-weight:700;font-size:.82rem;margin-top:10px;">✓ Level tuntas! Level berikutnya sudah terbuka.</p>`
+        :`<p style="color:var(--red);font-weight:700;font-size:.82rem;margin-top:10px;">Skor minimal ${KUIS_PASS}/5 untuk membuka level berikutnya. Silakan ulangi.</p>`}</div>
+        <div id="kReview"></div>
+        <div class="btnRow" style="justify-content:center;"><button class="btnPrimary" id="kRetry">Ulangi Level Ini</button>
+        <button class="btnGhost" id="kBack2">← Daftar Level</button></div></div>`;
+      document.getElementById("kReview").innerHTML=level.q.map((item,qi)=>`<div class="reviewRow">
+        <span class="ic ${answers[qi]===item.ans?'ok':'no'}">${answers[qi]===item.ans?'✓':'✕'}</span>
+        <span><b>Soal ${qi+1}:</b> ${item.q}<br>Jawaban benar: <b>${item.opts[item.ans]}</b></span></div>`).join("");
+      document.getElementById("kRetry").addEventListener("click",()=>runKuis(lv));
+      document.getElementById("kBack2").addEventListener("click",renderKuisHome);
+      pushRekap({jenis:"Kuis "+level.title,skor:score+"/5",catatan:tuntas?"Tuntas":"Belum tuntas"});
+    });
+  }
+  render();
+}
+renderKuisHome();
+
+/* ================= LATIHAN LOGIC ================= */
+const latihanContent=document.getElementById("latihanContent");
+latihanContent.innerHTML=LATIHAN.map((item,i)=>{
+  if(item.type==="pg"){
+    return `<div class="qBlock" data-i="${i}">
+      <div class="instrBox">Perintah: Pilihlah satu jawaban yang paling tepat!</div>
+      <div class="qNum">Soal ${i+1}</div><p style="margin-top:0;">${item.q}</p>
+      <div class="lOpts">${item.opts.map((o,oi)=>`<label class="opt"><input type="radio" name="l${i}" value="${oi}"> ${o}</label>`).join("")}</div>
+      <div class="btnRow"><button class="btnGhost lCheck" data-i="${i}">Cek Jawaban</button></div>
+      <div class="lFeedback" style="display:none;font-size:.82rem;margin-top:8px;"></div></div>`;
+  }else{
+    return `<div class="qBlock" data-i="${i}">
+      <div class="instrBox">Perintah: Isilah jawaban singkat dan tepat pada kolom yang tersedia!</div>
+      <div class="qNum">Soal ${i+1}</div><p style="margin-top:0;">${item.q}</p>
+      <input type="text" class="isianInput" id="lIsi${i}" placeholder="Ketik jawabanmu...">
+      <div class="btnRow"><button class="btnGhost lCheck" data-i="${i}">Cek Jawaban</button></div>
+      <div class="lFeedback" style="display:none;font-size:.82rem;margin-top:8px;"></div></div>`;
+  }
+}).join("");
+latihanContent.querySelectorAll(".lCheck").forEach(btn=>{
+  btn.addEventListener("click",()=>{
+    const i=+btn.dataset.i;const item=LATIHAN[i];
+    const block=latihanContent.querySelector(`.qBlock[data-i="${i}"]`);
+    const fb=block.querySelector(".lFeedback");fb.style.display="block";
+    if(item.type==="pg"){
+      const sel=block.querySelector(`input[name="l${i}"]:checked`);
+      const opts=block.querySelectorAll(".opt");
+      opts.forEach((o,oi)=>{o.classList.toggle("correct",oi===item.ans);if(sel&&+sel.value===oi&&oi!==item.ans)o.classList.add("wrong");});
+      if(!sel){fb.innerHTML=`<span style="color:var(--red);">Pilih salah satu jawaban dulu ya.</span>`;return;}
+      const benar=+sel.value===item.ans;
+      fb.innerHTML=`<b style="color:${benar?'var(--green)':'var(--red)'};">${benar?'Benar!':'Kurang tepat.'}</b> ${item.expl}`;
+    }else{
+      const val=document.getElementById("lIsi"+i).value.trim().toLowerCase();
+      const benar=item.accept.some(a=>val.includes(a.toLowerCase()));
+      fb.innerHTML=`<b style="color:${benar?'var(--green)':'var(--red)'};">${benar?'Benar!':'Kurang tepat.'}</b> Kunci: <i>${item.accept[0]}</i>. ${item.expl}`;
+    }
+    if(!latihanChecked.includes(i)){latihanChecked.push(i);saveLatihanChecked();updateNavLocks();updateLatihanProgressLabel();}
+  });
+});
+function updateLatihanProgressLabel(){
+  const el=document.getElementById("latihanProgressLabel");
+  if(el)el.textContent=`Progres: ${latihanChecked.length}/${LATIHAN.length} soal sudah dicek.`;
+  renderEvalGate();
+}
+
+/* ================= EVALUASI LOGIC (maksimal 3x percobaan) ================= */
+const MAX_EVAL_ATTEMPTS=3;
+const evalContent=document.getElementById("evalContent");
+const evalResult=document.getElementById("evalResult");
+const evalIntro=document.getElementById("evalIntro");
+function getEvalAttempts(){try{return parseInt(localStorage.getItem("anekdot_eval_attempts_"+userSlug())||"0",10);}catch(e){return 0;}}
+function setEvalAttempts(n){try{localStorage.setItem("anekdot_eval_attempts_"+userSlug(),String(n));}catch(e){}}
+function shuffleIdx(n){const a=[...Array(n).keys()];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+const jodohShuffles=[];
+function updateEvalIntro(){
+  const att=getEvalAttempts();
+  const sisa=Math.max(0,MAX_EVAL_ATTEMPTS-att);
+  evalIntro.innerHTML=`<p style="font-size:.85rem;margin:0;">Evaluasi ini terdiri atas 5 jenis soal model AKM: Pilihan Ganda, Pilihan Ganda Kompleks, Isian Singkat, Benar‑Salah, dan Menjodohkan. Jawab seluruh soal lalu tekan <b>Selesai &amp; Lihat Nilai</b> untuk penilaian otomatis.</p>
+   <p style="font-size:.8rem;margin:8px 0 0;color:var(--navy);font-weight:700;">Percobaan ke-${Math.min(att+1,MAX_EVAL_ATTEMPTS)} dari ${MAX_EVAL_ATTEMPTS} (sisa ${sisa} kali)</p>`;
+}
+function renderEval(){
+  updateEvalIntro();
+  evalResult.innerHTML="";
+  const att=getEvalAttempts();
+  if(att>=MAX_EVAL_ATTEMPTS){
+    evalInProgress=false;
+    evalContent.innerHTML=`<div class="resultBox"><p style="color:var(--red);font-weight:700;">Kamu sudah mencapai batas maksimal ${MAX_EVAL_ATTEMPTS} kali pengerjaan Evaluasi.</p>
+      <p style="font-size:.85rem;color:var(--muted);">Hubungi guru mapel apabila memerlukan kesempatan tambahan.</p></div>`;
+    return;
+  }
+  evalInProgress=true;
+  evalContent.innerHTML=EVALUASI.map((item,i)=>{
+    const num=`<div class="qNum">Soal ${i+1}</div>`;
+    const instr=`<div class="instrBox">Perintah: ${item.instr}</div>`;
+    if(item.type==="pg"){
+      return `<div class="qBlock" data-i="${i}">${num}${instr}<p style="margin-top:0;">${item.q}</p>
+        ${item.opts.map((o,oi)=>`<label class="opt"><input type="radio" name="e${i}" value="${oi}"> ${o}</label>`).join("")}</div>`;
+    }
+    if(item.type==="pgk"){
+      return `<div class="qBlock" data-i="${i}">${num}${instr}<p style="margin-top:0;">${item.q}</p>
+        ${item.opts.map((o,oi)=>`<label class="opt"><input type="checkbox" name="e${i}" value="${oi}"> ${o}</label>`).join("")}</div>`;
+    }
+    if(item.type==="isian"){
+      return `<div class="qBlock" data-i="${i}">${num}${instr}<p style="margin-top:0;">${item.q}</p>
+        <input type="text" class="isianInput" id="e${i}" placeholder="Ketik jawabanmu..."></div>`;
+    }
+    if(item.type==="bs"){
+      return `<div class="qBlock" data-i="${i}">${num}${instr}<p style="margin-top:0;">${item.q}</p>
+        ${item.statements.map((st,si)=>`<div class="bsStmt"><span>${st.s}</span>
+          <div class="bsBtns"><button type="button" class="sel-true" data-i="${i}" data-si="${si}" data-v="true">BENAR</button>
+          <button type="button" class="sel-false" data-i="${i}" data-si="${si}" data-v="false">SALAH</button></div></div>`).join("")}</div>`;
+    }
+    if(item.type==="jodoh"){
+      const order=shuffleIdx(item.right.length);jodohShuffles[i]=order;
+      return `<div class="qBlock" data-i="${i}">${num}${instr}<p style="margin-top:0;">${item.q}</p>
+        ${item.left.map((l,li)=>`<div class="jodohRow"><span class="jl">${l}</span>
+          <select id="e${i}_${li}"><option value="">— Pilih Jawaban —</option>${order.map(ri=>`<option value="${ri}">${item.right[ri]}</option>`).join("")}</select></div>`).join("")}</div>`;
+    }
+  }).join("");
+  evalContent.querySelectorAll(".bsBtns button").forEach(btn=>{
+    btn.addEventListener("click",()=>{
+      const row=btn.parentElement;
+      row.querySelectorAll("button").forEach(b=>b.classList.remove("on"));
+      btn.classList.add("on");
+    });
+  });
+  evalContent.insertAdjacentHTML("beforeend",`<div class="btnRow"><button class="btnPrimary" id="evalSubmit">Selesai & Lihat Nilai</button></div>`);
+  document.getElementById("evalSubmit").addEventListener("click",gradeEval);
+}
+function gradeEval(){
+  evalInProgress=false;
+  let total=0;const details=[];
+  EVALUASI.forEach((item,i)=>{
+    let earn=0,detail="";
+    if(item.type==="pg"){
+      const sel=document.querySelector(`input[name="e${i}"]:checked`);
+      const ok=sel&&+sel.value===item.ans;earn=ok?item.w:0;
+      detail=`Jawaban benar: <b>${item.opts[item.ans]}</b>`;
+    }else if(item.type==="pgk"){
+      const checked=[...document.querySelectorAll(`input[name="e${i}"]:checked`)].map(c=>+c.value);
+      const correctSet=item.ans;
+      const trueSel=checked.filter(c=>correctSet.includes(c)).length;
+      const falseSel=checked.filter(c=>!correctSet.includes(c)).length;
+      const frac=Math.max(0,(trueSel-falseSel)/correctSet.length);
+      earn=Math.round(frac*item.w*10)/10;
+      detail=`Jawaban benar: <b>${correctSet.map(ci=>item.opts[ci]).join("; ")}</b>`;
+    }else if(item.type==="isian"){
+      const val=(document.getElementById("e"+i).value||"").trim().toLowerCase();
+      const ok=item.accept.some(a=>val===a.toLowerCase()||val.includes(a.toLowerCase()));
+      earn=ok?item.w:0;
+      detail=`Kunci jawaban: <b>${item.accept[0]}</b>`;
+    }else if(item.type==="bs"){
+      let correctCount=0;
+      item.statements.forEach((st,si)=>{
+        const sel=evalContent.querySelector(`.qBlock[data-i="${i}"] .bsStmt:nth-child(${si+2}) button.on`);
+        const val=sel?sel.dataset.v==="true":null;
+        if(val===st.ans)correctCount++;
+      });
+      earn=Math.round((correctCount/item.statements.length)*item.w*10)/10;
+      detail=`Kunci: ${item.statements.map(st=>(st.ans?'BENAR':'SALAH')).join(", ")}`;
+    }else if(item.type==="jodoh"){
+      let correctCount=0;
+      item.left.forEach((l,li)=>{
+        const sel=document.getElementById(`e${i}_${li}`);
+        const val=sel&&sel.value!==""?+sel.value:null;
+        if(val===item.ans[li])correctCount++;
+      });
+      earn=Math.round((correctCount/item.left.length)*item.w*10)/10;
+      detail=`Kunci: ${item.left.map((l,li)=>`${l} = ${item.right[item.ans[li]]}`).join("; ")}`;
+    }
+    total+=earn;
+    details.push({i,earn,w:item.w,detail,q:item.q||item.instr});
+  });
+  total=Math.round(total*10)/10;
+  const pred=total>=90?"Sangat Baik":total>=75?"Baik":total>=60?"Cukup":"Perlu Bimbingan";
+  const attNow=getEvalAttempts()+1;setEvalAttempts(attNow);
+  try{localStorage.setItem("anekdot_eval_"+userSlug(),JSON.stringify({total,ts:Date.now()}));}catch(e){}
+  const sisa=Math.max(0,MAX_EVAL_ATTEMPTS-attNow);
+  evalResult.innerHTML=`<div class="card"><div class="resultBox">
+    <div style="font-size:.8rem;color:var(--muted);">Hasil Evaluasi ${USER.nama} (${USER.kelas}) — Percobaan ke-${attNow} dari ${MAX_EVAL_ATTEMPTS}</div>
+    <div class="num">${total}</div><div class="pred">${pred}</div></div>
+    <h4 style="font-size:.9rem;color:var(--navy);">Rincian Penilaian per Soal</h4>
+    ${details.map(d=>`<div class="reviewRow"><span class="ic ${d.earn>=d.w?'ok':(d.earn>0?'':'no')}">${d.earn>=d.w?'✓':(d.earn>0?'±':'✕')}</span>
+      <span><b>Soal ${d.i+1}</b> (skor ${d.earn}/${d.w}) — ${d.detail}</span></div>`).join("")}
+    <div class="btnRow" style="justify-content:center;">${sisa>0?`<button class="btnPrimary" id="evalRetry">Ulangi Evaluasi (sisa ${sisa}x)</button>`:`<p style="color:var(--red);font-weight:700;font-size:.85rem;">Batas maksimal ${MAX_EVAL_ATTEMPTS} kali percobaan sudah tercapai.</p>`}</div></div>`;
+  evalContent.querySelectorAll("input,select,button").forEach(el=>el.disabled=true);
+  window.scrollTo({top:document.getElementById("page-evaluasi").offsetTop-70,behavior:"smooth"});
+  if(sisa>0)document.getElementById("evalRetry").addEventListener("click",()=>{evalResult.innerHTML="";renderEval();});
+  pushRekap({jenis:"Evaluasi Akhir",skor:total+"/100",catatan:pred+" (percobaan "+attNow+"/"+MAX_EVAL_ATTEMPTS+")"});
+}
+updateEvalIntro();
+renderEval();
+
+/* ================= REKAP NILAI SISWA (khusus milik sendiri, tanpa unduh) ================= */
+let dbCap=null;
+(async()=>{ try{dbCap=await claude.use("db");}catch(e){dbCap=null;} })();
+async function pushRekap(data){
+  const row={nama:USER.nama,kelas:USER.kelas,jenis:data.jenis,skor:data.skor,catatan:data.catatan||"",waktu:new Date().toISOString()};
+  try{if(!dbCap)dbCap=await claude.use("db");
+    if(dbCap)await dbCap.collection("rekap_nilai").add(row);
+  }catch(e){/* gagal simpan ke penyimpanan bersama, data tetap ada di localStorage siswa */}
+  try{
+    const arr=JSON.parse(localStorage.getItem("anekdot_rekap_lokal")||"[]");
+    arr.push(row);localStorage.setItem("anekdot_rekap_lokal",JSON.stringify(arr));
+  }catch(e){}
+}
+async function renderRekap(){
+  const statusEl=document.getElementById("rekapStatus");
+  const wrapEl=document.getElementById("rekapTableWrap");
+  statusEl.innerHTML=`<p style="font-size:.85rem;margin:0;">Memuat progres nilaimu…</p>`;
+  let rows=[];
+  try{
+    if(!dbCap)dbCap=await claude.use("db");
+    if(dbCap){
+      const snap=await dbCap.collection("rekap_nilai").where("nama","==",USER.nama).where("kelas","==",USER.kelas).get();
+      rows=snap.docs.map(d=>d.data());
+    }
+  }catch(e){}
+  if(rows.length===0){
+    try{
+      rows=JSON.parse(localStorage.getItem("anekdot_rekap_lokal")||"[]").filter(r=>r.nama===USER.nama&&r.kelas===USER.kelas);
+    }catch(e){rows=[];}
+  }
+  rows.sort((a,b)=>new Date(b.waktu)-new Date(a.waktu));
+  statusEl.innerHTML=`<p style="font-size:.85rem;margin:0;">Halaman ini hanya menampilkan progres nilai milik <b>${USER.nama} (${USER.kelas})</b> sendiri. Tunjukkan layar ini kepada Bapak/Ibu guru mapel bila diminta untuk pengecekan nilai.</p>
+    <div class="btnRow"><button class="btnGhost" id="rekapRefresh">🔄 Muat Ulang</button><button class="btnGhost" id="rekapReset" style="color:var(--red);border-color:var(--red);">🗑️ Reset Progres Saya</button></div>`;
+  wrapEl.innerHTML=rows.length===0?`<div class="card"><p style="font-size:.85rem;color:var(--muted);margin:0;">Belum ada nilai yang tercatat. Kerjakan Kuis Bertingkat atau Evaluasi terlebih dahulu.</p></div>`:
+    rows.map(r=>`<div class="card" style="padding:14px 18px;"><div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
+      <div><b style="color:var(--navy);">${r.jenis}</b><br><span style="font-size:.78rem;color:var(--muted);">${r.waktu?new Date(r.waktu).toLocaleString("id-ID"):"-"}</span></div>
+      <div style="text-align:right;"><span class="badgeYellow" style="margin:0;">${r.skor}</span><br><span style="font-size:.76rem;color:var(--muted);">${r.catatan||""}</span></div>
+    </div></div>`).join("");
+  const refreshBtn=document.getElementById("rekapRefresh");
+  if(refreshBtn)refreshBtn.addEventListener("click",renderRekap);
+  const resetBtn=document.getElementById("rekapReset");
+  if(resetBtn)resetBtn.addEventListener("click",openResetModal);
+}
+function openResetModal(){
+  const overlay=document.createElement("div");
+  overlay.style.cssText="position:fixed;inset:0;background:rgba(11,37,69,.55);z-index:100;display:flex;align-items:center;justify-content:center;padding:20px;";
+  overlay.innerHTML=`<div style="background:#fff;border-radius:14px;max-width:360px;width:100%;padding:22px 20px;text-align:center;box-shadow:0 20px 50px rgba(0,0,0,.3);">
+    <h3 style="margin-top:0;color:var(--red);">Reset Progres Saya?</h3>
+    <p style="font-size:.85rem;color:var(--muted);">Semua status baca Materi, tanda selesai Ringkasan & Proyek, progres cek Latihan, skor Kuis Bertingkat, status kunci level, jumlah percobaan Evaluasi, dan riwayat rekap milik <b>${USER.nama} (${USER.kelas})</b> akan dihapus total dari perangkat ini dan kembali ke kondisi kosong (semua menu akan terkunci kembali dari awal). Tindakan ini tidak bisa dibatalkan.</p>
+    <div class="btnRow" style="justify-content:center;margin-top:16px;">
+      <button class="btnGhost" id="cancelReset">Batal</button>
+      <button class="btnPrimary" id="confirmReset" style="background:var(--red);">Ya, Reset</button>
+    </div></div>`;
+  document.body.appendChild(overlay);
+  document.getElementById("cancelReset").addEventListener("click",()=>overlay.remove());
+  overlay.addEventListener("click",e=>{if(e.target===overlay)overlay.remove();});
+  document.getElementById("confirmReset").addEventListener("click",()=>{
+    overlay.remove();
+    try{localStorage.removeItem("anekdot_kuis_"+userSlug());}catch(e){}
+    try{localStorage.removeItem("anekdot_eval_attempts_"+userSlug());}catch(e){}
+    try{localStorage.removeItem("anekdot_eval_"+userSlug());}catch(e){}
+    try{localStorage.removeItem("anekdot_materiread_"+userSlug());}catch(e){}
+    try{localStorage.removeItem("anekdot_progress_"+userSlug());}catch(e){}
+    try{localStorage.removeItem("anekdot_latihanchecked_"+userSlug());}catch(e){}
+    try{
+      const arr=JSON.parse(localStorage.getItem("anekdot_rekap_lokal")||"[]").filter(r=>!(r.nama===USER.nama&&r.kelas===USER.kelas));
+      localStorage.setItem("anekdot_rekap_lokal",JSON.stringify(arr));
+    }catch(e){}
+    loadKuisScores();renderKuisHome();
+    updateEvalIntro();renderEval();
+    loadMateriRead();loadProgress();loadLatihanChecked();
+    curMateriIdx=0;renderSubtabs();showMateri(0);
+    renderRingkasanPage();renderProyekPage();
+    updateLatihanProgressLabel();
+    navState={};
+    latihanContent.querySelectorAll(".lFeedback").forEach(f=>{f.style.display="none";f.innerHTML="";});
+    latihanContent.querySelectorAll(".opt").forEach(o=>o.classList.remove("correct","wrong"));
+    latihanContent.querySelectorAll("input[type=radio]").forEach(r=>r.checked=false);
+    latihanContent.querySelectorAll("input[type=text]").forEach(t=>t.value="");
+    updateNavLocks();
+    showProtectToast("✅ Semua progres kamu (materi, ringkasan, proyek, kuis, latihan, evaluasi) sudah direset.");
+    renderRekap();
+  });
+}
+document.querySelector('nav.mainnav button[data-page="rekap"]').addEventListener("click",renderRekap);
+
+/* ================= PANEL GURU (tersembunyi, buka dengan #guru di akhir tautan) ================= */
+const GURU_PASS_HASH="62bf4b3b99eb253d5de7d656d97c8db5dd76e19703ba8d696b4ebe05aa47a33d";
+(function(){
+  const $=id=>document.getElementById(id);
+  const KL=["X-1","X-2","X-3","X-4","X-5","X-6"];
+  const COLS=["p0","p1","p2","kuis","eval"],HEAD=["Proyek 1","Proyek 2","Proyek 3","Buka Kuis","Buka Evaluasi"];
+  const inputStyle='width:100%;min-width:84px;padding:7px 8px;border:1.5px solid #ccd;border-radius:7px;box-sizing:border-box;font-family:monospace;';
+  $("guruGrid").innerHTML='<table style="width:100%;border-collapse:collapse;"><tr><th style="text-align:left;padding:4px;">Kelas</th>'+HEAD.map(h=>'<th>'+h+'</th>').join("")+'</tr>'+
+    KL.map(k=>'<tr><td style="padding:4px;font-weight:700;">'+k+'</td>'+COLS.map(c=>'<td style="padding:3px;"><input id="gk_'+k+'_'+c+'" style="'+inputStyle+'"></td>').join("")+'</tr>').join("")+'</table>';
+  function tutup(){$("guruPanel").style.display="none";$("guruIsi").style.display="none";$("guruLogin").style.display="block";$("guruPass").value="";
+    if(location.hash==="#guru")history.replaceState(null,"",location.pathname+location.search);}
+  function cek(){if(location.hash==="#guru"){$("guruPanel").style.display="block";setTimeout(()=>$("guruPass").focus(),50);}}
+  $("guruMasuk").addEventListener("click",()=>{
+    if(hashKode($("guruPass").value,99)!==GURU_PASS_HASH){$("guruErr").textContent="Password guru salah.";return;}
+    $("guruErr").textContent="";$("guruLogin").style.display="none";$("guruIsi").style.display="block";
+  });
+  $("guruPass").addEventListener("keydown",e=>{if(e.key==="Enter")$("guruMasuk").click();});
+  function acak(cols){
+    const A="abcdefghjkmnpqrstuvwxyz23456789",used=new Set();
+    document.querySelectorAll("#guruGrid input").forEach(x=>{if(x.value)used.add(x.value.trim().toLowerCase());});
+    KL.forEach(k=>cols.forEach(c=>{
+      let v;do{const r=new Uint8Array(5);(window.crypto||window.msCrypto).getRandomValues(r);v=Array.from(r,b=>A[b%A.length]).join("");}while(used.has(v));
+      used.add(v);$("gk_"+k+"_"+c).value=v;
+    }));
+    $("guruOut").value="";
+  }
+  $("guruAcakP").addEventListener("click",()=>acak(["p0","p1","p2"]));
+  $("guruAcakG").addEventListener("click",()=>acak(["kuis","eval"]));
+  $("guruBuat").addEventListener("click",()=>{
+    const val=(k,c)=>$("gk_"+k+"_"+c).value.trim();
+    const grp=[["p0","p1","p2"],["kuis","eval"]];
+    const stat=grp.map(g=>{let n=0;KL.forEach(k=>g.forEach(c=>{if(val(k,c))n++;}));return {n,total:KL.length*g.length};});
+    if(stat.some(x=>x.n>0&&x.n<x.total)){$("guruOut").value="Ada kolom yang masih kosong pada kelompok yang sedang diisi. Lengkapi semua kelas atau kosongkan seluruh kelompok itu.";return;}
+    if(!stat[0].n&&!stat[1].n){$("guruOut").value="Isi kode terlebih dahulu (atau klik tombol Acak).";return;}
+    const lines=[];
+    if(stat[0].n){const o={};KL.forEach(k=>{o[k]=["p0","p1","p2"].map((c,i)=>hashKode(val(k,c),k+"#"+i));});lines.push("const PROYEK_KODE_HASH="+JSON.stringify(o)+";");}
+    if(stat[1].n){const o={};KL.forEach(k=>{o[k]={kuis:hashKode(val(k,"kuis"),k+"#kuis"),eval:hashKode(val(k,"eval"),k+"#eval")};});lines.push("const KODE_GATE_HASH="+JSON.stringify(o)+";");}
+    $("guruOut").value=lines.join("\n\n");
+  });
+  $("guruSalin").addEventListener("click",()=>{
+    const t=$("guruOut");t.select();
+    try{document.execCommand("copy");showProtectToast("✅ Tersalin.");}catch(e){}
+  });
+  $("guruTutup").addEventListener("click",tutup);
+  $("guruTutup2").addEventListener("click",tutup);
+  window.addEventListener("hashchange",cek);
+  cek();
+})();
+
+/* ================= INIT ================= */
+loadState();
+updateNavLocks();
+const accessOk=applyAccessGate();
+if(accessOk&&USER.nama&&USER.kelas)enterApp();
+
+</script>
+</body>
+</html>
